@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ ! -d $1 ]]; then
+  echo "Usage: create-build-master <directory to create build master in>"
+  echo "Directory given above must already exist."
+  exit 1
+fi
+
+BMSKEL=$(readlink -f $(dirname $0))
+cd $1
+cp $BMSKEL/Makefile .
+cp $BMSKEL/master.cfg .
+buildbot create-master .
+rm Makefile.sample
+rm master.cfg.sample

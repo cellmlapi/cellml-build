@@ -20,9 +20,9 @@ How to get a build system started:
   cd /cygdrive/c/
   mkdir build
   cd build
-  hg clone http://bitbucket.org/A1kmm/physiome-build
+  hg clone http://bitbucket.org/a1kmm/physiome-build
   cd physiome-build/cygwin-build
   ./setup-build-environment.sh
 
 5)
-  Follow the on-screen instructions.
+  At several points things will pop up on the screen. Read the text in the Cygwin window for instructions.

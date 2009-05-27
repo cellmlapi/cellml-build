@@ -1,0 +1,28 @@
+How to get a build system started:
+
+1)
+  Download Cygwin from
+    http://www.cygwin.com/setup.exe
+
+  Run setup.exe, and install at least bash, and the basic command line utilities (awk, grep, etc...). Also wget should be installed. You do not need to pick out all the required packages yet.
+
+  Continue through and install cygwin.
+
+2)
+  Start up a Cygwin shell, and run:
+  wget http://stephenjungels.com/jungels.net/projects/apt-cyg/apt-cyg -O /usr/bin/apt-cyg
+
+3)
+  Issue:
+  apt-cyg install mercurial
+  
+4)
+  cd /cygdrive/c/
+  mkdir build
+  cd build
+  hg clone http://bitbucket.org/A1kmm/physiome-build
+  cd physiome-build/cygwin-build
+  ./setup-build-environment.sh
+
+5)
+  Follow the on-screen instructions.

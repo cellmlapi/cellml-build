@@ -81,7 +81,7 @@ else:
 if not (command in ["package", "test"]):
     fail("Invalid command given to run-platform-command")
 
-if cleanBuild and (command == "package"):
+if fromPristine and (command == "package"):
     fail("Must build and test successfully before package command can occur")
 
 if command == "test":

@@ -10,7 +10,7 @@ projectRepos = {
 snapshot_branch = 'trunk'
 
 # Now the script proper...
-import sys, os, shutil, mercurial, subprocess, re, datetime
+import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, subprocess, re, datetime
 
 def checked_call(cmd):
     print 'Executing ' + cmd

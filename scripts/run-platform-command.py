@@ -10,7 +10,7 @@ projectRepos = {
 snapshot_branch = 'trunk'
 
 # Now the script proper...
-import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, subprocess, re, datetime
+import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime
 
 def checked_call(cmd):
     print 'Executing ' + cmd[0]
@@ -97,14 +97,14 @@ if command == "test":
         prisrepo = mercurial.hg.repository(ui, project)
     else:
         prisrepo = mercurial.hg.repository(ui, project)
-        mercurial.hg.clean(prisrepo, None)
+        mercurial.commands.pull(ui, prisrepo, update=True)
     
     if fromPristine:
         mercurial.hg.clone(ui, prisrepo, path, stream=None, rev=None, pull=None, update=True)
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)
-        mercurial.hg.clean(buildrepo, None)
+        mercurial.commands.pull(ui, buildrepo, update=True)
 
     # We now have an up-to-date build repo, clobbered if requested. Build it...
     os.chdir(path)

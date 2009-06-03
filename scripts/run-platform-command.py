@@ -73,7 +73,7 @@ if project == "cellml-api":
                         "--enable-rdf"]
 else:
     configureOptions = ["--with-mozilla=" + xulrunner_path,
-                        "--with-cellml_api=" + os.getcwd().replace('build_opencell', 'build_api') + '../cellml-api-build']
+                        "--with-cellml_api=" + os.getcwd().replace('build_opencell', 'build_api') + '/../cellml-api-build']
 path = project + "-build"
 java = False
 
@@ -155,7 +155,7 @@ elif command == "package":
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", "opencell-win32.nsi"])
         else:
-            cellml_api = os.getcwd().replace('build_opencell', 'build_api') + '../cellml-api-build'
+            cellml_api = os.getcwd().replace('build_opencell', 'build_api') + '/../cellml-api-build'
             checked_call(['./opencell-build/installers/FinalStageMaker.py', './opencell-build/installers/' + spec + '.spec',
                           'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=./opencell-build', 'version=latest',
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,

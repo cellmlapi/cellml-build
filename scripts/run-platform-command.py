@@ -93,7 +93,10 @@ if command == "package-java":
 mkPristine = not os.path.exists('../' + project)
 
 if deptype == "clobber":
-    shutil.rmtree(path)
+    try:
+        shutil.rmtree(path)
+    except OSError:
+        pass
     fromPristine = True
 else:
     fromPristine = not os.path.exists('../' + path)

@@ -64,12 +64,15 @@ if platform == 'linux-x86' or platform == 'linux-x86_64':
     ship_gcc_path = '/home/amil082/gccprefix'
 
 repo = projectRepos[project]
-configureOptions = ["--enable-xpcom=" + xulrunner_path, "--enable-context",
-                    "--enable-annotools", "--enable-cuses",
-                    "--enable-cevas", "--enable-vacss",
-                    "--enable-malaes", "--enable-ccgs",
-                    "--enable-celeds", "--enable-cis",
-                    "--enable-rdf"]
+if project == "cellml-api":
+    configureOptions = ["--enable-xpcom=" + xulrunner_path, "--enable-context",
+                        "--enable-annotools", "--enable-cuses",
+                        "--enable-cevas", "--enable-vacss",
+                        "--enable-malaes", "--enable-ccgs",
+                        "--enable-celeds", "--enable-cis",
+                        "--enable-rdf"]
+else:
+    configureOptions = ["--with-mozilla=" + xulrunner_path]
 path = project + "-build"
 java = False
 

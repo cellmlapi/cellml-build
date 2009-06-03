@@ -73,13 +73,13 @@ if command == "package-java":
     command = "package"
     java = True
 
-mkPristine = not os.path.exists(project)
+mkPristine = not os.path.exists('../' + project)
 
 if deptype == "clobber":
     shutil.rmtree(path)
     fromPristine = True
 else:
-    fromPristine = not os.path.exists(path)
+    fromPristine = not os.path.exists('../' + path)
 
 if not (command in ["package", "test"]):
     fail("Invalid command given to run-platform-command")
@@ -137,7 +137,7 @@ elif command == "package":
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", "opencell-win32.nsi"])
         else:
-            cellml_api = os.getcwd().replace('clean_build_opencell', 'clean_build_api') + '../cellml-api-build'
+            cellml_api = os.getcwd().replace('build_opencell', 'build_api') + '../cellml-api-build'
             if platform == 'linux-x86' or platform == 'linux-x86_64':
                 spec = 'linux'
                 xulrunner_path = '/data/mozilla_trunk/obj-i686-pc-linux-gnu/stablexr/dist'

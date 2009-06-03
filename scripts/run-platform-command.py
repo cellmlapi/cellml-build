@@ -13,9 +13,9 @@ snapshot_branch = 'trunk'
 import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, subprocess, re, datetime
 
 def checked_call(cmd):
-    print 'Executing ' + cmd
+    print 'Executing ' + cmd[0]
     if subprocess.call(cmd) != 0:
-        print 'Error: ' + cmd + ' failed.'
+        print 'Error: ' + cmd[0] + ' failed.'
         sys.exit(1)
 
 def fail(why):
@@ -60,6 +60,9 @@ configureOptions = ""
 path = project + "-build"
 java = False
 
+# Get the timestamp of this script...
+scriptTime = os.stat('./scripts/run-platform-command.py').st_mtime
+
 if command == "test-java":
     path = project + "-java"
     command = "test"
@@ -84,6 +87,8 @@ if not (command in ["package", "test"]):
 if fromPristine and (command == "package"):
     fail("Must build and test successfully before package command can occur")
 
+os.chdir('..')
+
 if command == "test":
     ui = mercurial.ui.ui()
     if mkPristine:
@@ -100,9 +105,6 @@ if command == "test":
     else:
         buildrepo = mercurial.hg.repository(ui, path)
         mercurial.hg.clean(buildrepo, None)
-
-    # Get the timestamp of this script...
-    scriptTime = os.stat('./scripts/run-platform-command.py').st_mtime
 
     # We now have an up-to-date build repo, clobbered if requested. Build it...
     os.chdir(path)

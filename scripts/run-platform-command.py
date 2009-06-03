@@ -137,6 +137,7 @@ elif command == "package":
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", "opencell-win32.nsi"])
         else:
+            cellml_api = os.getcwd().replace('clean_build_opencell', 'clean_build_api') + '../cellml-api-build'
             if platform == 'linux-x86' or platform == 'linux-x86_64':
                 spec = 'linux'
                 xulrunner_path = '/data/mozilla_trunk/obj-i686-pc-linux-gnu/stablexr/dist'
@@ -144,9 +145,9 @@ elif command == "package":
                 xml_path = '/home/amil082/libxml2-2.6.27/'
                 gcc_path = '/home/amil082/gcc-4.1.1/i686-pc-linux-gnu/'
                 ship_gcc_path = '/home/amil082/gccprefix'
-            checked_call(['./opencell/installers/FinalStageMaker.py', './opencell/installers/' + spec + '.spec',
-                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=./opencell', 'version=latest',
-                          'CellMLAPI=./cellml-api', 'GSL=' + gsl_path,
+            checked_call(['./opencell-build/installers/FinalStageMaker.py', './opencell-build/installers/' + spec + '.spec',
+                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=./opencell-build', 'version=latest',
+                          'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])
     os.chdir('/tmp/' + project)

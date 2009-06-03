@@ -113,7 +113,7 @@ if command == "test":
         prisrepo = mercurial.hg.repository(ui, project)
     else:
         prisrepo = mercurial.hg.repository(ui, project)
-        mercurial.commands.pull(ui, prisrepo, "http://www.bitbucket.org/a1kmm/cellml-api",
+        mercurial.commands.pull(ui, prisrepo, repo,
                                 update=True)
     
     if fromPristine:

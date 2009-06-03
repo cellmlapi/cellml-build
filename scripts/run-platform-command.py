@@ -131,7 +131,7 @@ if command == "test":
         checked_call(['./configure'] + configureOptions)
 
     checked_call('make')
-    checked_call('make check')
+    checked_call('make', 'check')
 elif command == "package":
     if project == "cellml-api":
         # Source code only...

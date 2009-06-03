@@ -55,8 +55,21 @@ project = sys.argv[1]
 command = sys.argv[2]
 deptype = sys.argv[3]
 
+if platform == 'linux-x86' or platform == 'linux-x86_64':
+    spec = 'linux'
+    xulrunner_path = '/data/mozilla_trunk/obj-i686-pc-linux-gnu/stablexr/dist'
+    gsl = '/home/amil082/gsl-1.8/'
+    xml_path = '/home/amil082/libxml2-2.6.27/'
+    gcc_path = '/home/amil082/gcc-4.1.1/i686-pc-linux-gnu/'
+    ship_gcc_path = '/home/amil082/gccprefix'
+
 repo = projectRepos[project]
-configureOptions = ""
+configureOptions = ["--enable-xpcom=" + xulrunner_path, "--enable-context",
+                    "--enable-annotools", "--enable-cuses",
+                    "--enable-cevas", "--enable-vacss",
+                    "--enable-malaes", "--enable-ccgs",
+                    "--enable-celeds", "--enable-cis",
+                    "--enable-rdf"]
 path = project + "-build"
 java = False
 
@@ -66,7 +79,7 @@ scriptTime = os.stat('./scripts/run-platform-command.py').st_mtime
 if command == "test-java":
     path = project + "-java"
     command = "test"
-    configureOptions = " --enable-java"
+    configureOptions += ["--enable-java"]
 
 if command == "package-java":
     path = project + "-java"
@@ -139,13 +152,6 @@ elif command == "package":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", "opencell-win32.nsi"])
         else:
             cellml_api = os.getcwd().replace('build_opencell', 'build_api') + '../cellml-api-build'
-            if platform == 'linux-x86' or platform == 'linux-x86_64':
-                spec = 'linux'
-                xulrunner_path = '/data/mozilla_trunk/obj-i686-pc-linux-gnu/stablexr/dist'
-                gsl = '/home/amil082/gsl-1.8/'
-                xml_path = '/home/amil082/libxml2-2.6.27/'
-                gcc_path = '/home/amil082/gcc-4.1.1/i686-pc-linux-gnu/'
-                ship_gcc_path = '/home/amil082/gccprefix'
             checked_call(['./opencell-build/installers/FinalStageMaker.py', './opencell-build/installers/' + spec + '.spec',
                           'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=./opencell-build', 'version=latest',
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,

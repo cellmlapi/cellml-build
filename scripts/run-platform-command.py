@@ -86,17 +86,19 @@ if fromPristine and (command == "package"):
 
 if command == "test":
     ui = mercurial.ui.ui()
-    prisrepo = mercurial.hg.repository(ui, project)
-    buildrepo = mercurial.hg.repository(ui, path)
     if mkPristine:
         mercurial.hg.clone(ui, repo, project, stream=None, rev=None,
                            pull=None, update=True)
+        prisrepo = mercurial.hg.repository(ui, project)
     else:
+        prisrepo = mercurial.hg.repository(ui, project)
         mercurial.hg.clean(prisrepo, None)
     
     if fromPristine:
         mercurial.hg.clone(ui, prisrepo, path, stream=None, rev=None, pull=None, update=True)
+        buildrepo = mercurial.hg.repository(ui, path)
     else:
+        buildrepo = mercurial.hg.repository(ui, path)
         mercurial.hg.clean(buildrepo, None)
 
     # Get the timestamp of this script...

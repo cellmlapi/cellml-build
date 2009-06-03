@@ -72,7 +72,8 @@ if project == "cellml-api":
                         "--enable-celeds", "--enable-cis",
                         "--enable-rdf"]
 else:
-    configureOptions = ["--with-mozilla=" + xulrunner_path]
+    configureOptions = ["--with-mozilla=" + xulrunner_path,
+                        "--with-cellml_api=" + os.getcwd().replace('build_opencell', 'build_api') + '../cellml-api-build']
 path = project + "-build"
 java = False
 

@@ -130,8 +130,8 @@ if command == "test":
         checked_call(['automake'])
         checked_call(['./configure'] + configureOptions)
 
-    checked_call('make')
-    checked_call('make', 'check')
+    checked_call(['make'])
+    checked_call(['make', 'check'])
 elif command == "package":
     if project == "cellml-api":
         # Source code only...
@@ -161,4 +161,4 @@ elif command == "package":
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)
     
-    checked_call('svn commit -m "Added a newly built snapshot"')
+    checked_call(['svn', 'commit', '-m', 'Added a newly built snapshot'])

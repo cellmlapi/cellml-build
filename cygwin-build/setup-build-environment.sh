@@ -29,3 +29,25 @@ About to install the Microsoft Platform SDK 2008. Please do the following:
   * Click Next twice to start the download.
 END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
+
+# Set up our buildbot...
+apt-cyg install python
+cd ~
+wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
+tar -xzf ./buildbot-0.7.10p1.tar.gz
+cd ./buildbot-0.7.10p1
+./setup.py install
+cd ~
+wget http://tmrc.mit.edu/mirror/twisted/Twisted/8.2/Twisted-8.2.0.tar.bz2
+tar -xjf ./Twisted-8.2.0.tar.bz2 
+cd Twisted-8.2.0
+python setup.py install
+cd ..
+wget http://www.zope.org/Products/ZopeInterface/3.3.0/zope.interface-3.3.0.tar.gz
+tar -xzf zope.interface-3.3.0.tar.gz
+cd ./zope.interface-3.3.0
+python setup.py install
+cd ..
+echo Enter the password for the buildbot (displays on the screen)
+read PASSWORD
+buildbot create-slave buildbot-win32 $PASSWORD

@@ -2,8 +2,8 @@
 
 # First some configuration...
 projectRepos = {
-    "cellml-api": "http://www.bitbucket.org/a1kmm/cellml-api",
-    "opencell": "http://www.bitbucket.org/a1kmm/opencell"
+    "cellml-api": "http://cellml-api.hg.sourceforge.net/hgroot/cellml-api",
+    "opencell": "http://cellml-opencell.hg.sourceforge.net/hgroot/cellml-opencell"
 }
 
 # For now... we need a better way to handle different branches.

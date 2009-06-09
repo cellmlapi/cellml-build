@@ -94,7 +94,7 @@ mkPristine = not os.path.exists('../' + project)
 
 if deptype == "clobber":
     try:
-        shutil.rmtree(path)
+        shutil.rmtree('../' + path)
     except OSError:
         pass
     fromPristine = True

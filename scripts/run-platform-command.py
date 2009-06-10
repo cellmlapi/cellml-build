@@ -150,7 +150,7 @@ elif command == "package":
     pathInSVN = 'snapshots/' + project + '/' + snapshot_branch + '/'
     if project == 'cellml-api':
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api.tar.bz2',
-                      project])
+                      '-C', os.getcwd().replace('package_api', 'clean_build_api') + '/../', project])
         pathInSVN += "cellml-api.tar.bz2"
     elif java:
         pass

@@ -165,7 +165,7 @@ elif command == "package":
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])
-    os.chdir('/tmp/' + project)
+    os.chdir('/tmp/' + project + platform)
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)
     

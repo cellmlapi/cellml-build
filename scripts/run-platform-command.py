@@ -80,6 +80,8 @@ java = False
 # Get the timestamp of this script...
 scriptTime = os.stat('./scripts/run-platform-command.py').st_mtime
 
+os.chdir('..')
+
 if command == "test-java":
     path = project + "-java"
     command = "test"
@@ -90,24 +92,22 @@ if command == "package-java":
     command = "package"
     java = True
 
-mkPristine = not os.path.exists('../' + project)
+mkPristine = not os.path.exists(project)
 
 if deptype == "clobber":
     try:
-        shutil.rmtree('../' + path)
+        shutil.rmtree(path)
     except OSError:
         pass
     fromPristine = True
 else:
-    fromPristine = not os.path.exists(os.getcwd().replace('package_', 'clean_build_') + '/../' + path)
+    fromPristine = not os.path.exists(os.getcwd().replace('package_', 'clean_build_') + '/' + path)
 
 if not (command in ["package", "test"]):
     fail("Invalid command given to run-platform-command")
 
 if fromPristine and (command == "package"):
     fail("Must build and test successfully before package command can occur")
-
-os.chdir('..')
 
 if command == "test":
     ui = mercurial.ui.ui()
@@ -150,17 +150,17 @@ elif command == "package":
     pathInSVN = 'snapshots/' + project + '/' + snapshot_branch + '/'
     if project == 'cellml-api':
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api.tar.bz2',
-                      '-C', os.getcwd().replace('package_api', 'clean_build_api') + '/../', project])
+                      '-C', os.getcwd().replace('package_api', 'clean_build_api') + '/', project])
         pathInSVN += "cellml-api.tar.bz2"
     elif java:
         pass
     elif project == "opencell":
         if platform == "win32":
-            checked_call(["c:\\Program Files\\NSIS\\makensis.exe", "opencell-win32.nsi"])
+            checked_call(["c:\\Program Files\\NSIS\\makensis.exe", opencell + "installers/opencell-win32.nsi"])
         else:
-            cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/../cellml-api-build'
-            opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/../opencell-build'
-            checked_call(['./opencell-build/installers/FinalStageMaker.py', './opencell-build/installers/' + spec + '.spec',
+            cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/cellml-api-build'
+            opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/opencell-build'
+            checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',
                           'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=latest',
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
                           'XML=' + xml_path, 'GCC=' + gcc_path,

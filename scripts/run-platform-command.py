@@ -10,10 +10,10 @@ projectRepos = {
 snapshot_branch = 'trunk'
 
 # Now the script proper...
-import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime
+import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
 
 def checked_call(cmd):
-    print 'Executing ' + cmd[0]
+    print 'Executing ' + string.join(cmd, ' ')
     if subprocess.call(cmd) != 0:
         print 'Error: ' + cmd[0] + ' failed.'
         sys.exit(1)

@@ -33,7 +33,7 @@ def build_new_entry(path):
 
 def add_entry_to_index(index, path):
     return index.replace('<!-- New entries go here -->',
-                         '<li>' + build_new_entry(path) +\
+                         '<li>' + build_new_entry(path + filename) +\
                          "</li>\n<!-- New entries go here -->")
 
 # Get the platform.
@@ -146,17 +146,26 @@ elif command == "package":
     
     checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/snapshots/' +\
                   project + '/' + snapshot_branch + '/' + platform, '/tmp/' + project + platform])
-    
+
+    if project == "cellml-api":
+        cellml_api = os.getcwd().replace('package_api', 'clean_build_api')
+    else:
+        cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/cellml-api-build'
+        opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/opencell-build'
+
     pathInSVN = 'snapshots/' + project + '/' + snapshot_branch + '/'
+
+    os.chdir('/tmp/' + project + platform)
     if project == 'cellml-api':
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api.tar.bz2',
-                      '-C', os.getcwd().replace('package_api', 'clean_build_api') + '/', project])
+                      '-C', cellml_api, project])
         pathInSVN += "cellml-api.tar.bz2"
     elif java:
         pass
     elif project == "opencell":
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", opencell + "installers/opencell-win32.nsi"])
+            pathInSVN += "opencell.exe"
         else:
             cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/cellml-api-build'
             opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/opencell-build'
@@ -165,7 +174,8 @@ elif command == "package":
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])
-    os.chdir('/tmp/' + project + platform)
+            if platform == "linux-x86":
+                pathInSVN += "opencell-x86_Linux.tar.bz2"
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)
     

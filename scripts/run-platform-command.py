@@ -167,8 +167,6 @@ elif command == "package":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", opencell + "installers/opencell-win32.nsi"])
             pathInSVN += "opencell.exe"
         else:
-            cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/cellml-api-build'
-            opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/opencell-build'
             checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',
                           'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=latest',
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,

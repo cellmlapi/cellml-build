@@ -99,7 +99,7 @@ if deptype == "clobber":
         pass
     fromPristine = True
 else:
-    fromPristine = not os.path.exists('../' + path)
+    fromPristine = not os.path.exists(os.getcwd().replace('package_', 'clean_build_') + '/../' + path)
 
 if not (command in ["package", "test"]):
     fail("Invalid command given to run-platform-command")
@@ -131,7 +131,7 @@ if command == "test":
     os.chdir(path)
     # To do: set up environment variables.
 
-    if (not os.path.exists('Makefile')) or (os.stat('Makefile').st_mtime > scriptTime):
+    if (not os.path.exists('Makefile')) or (os.stat('Makefile').st_mtime < scriptTime):
         checked_call(['aclocal'])
         checked_call(['autoconf'])
         checked_call(['automake'])
@@ -158,9 +158,10 @@ elif command == "package":
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", "opencell-win32.nsi"])
         else:
-            cellml_api = os.getcwd().replace('build_opencell', 'build_api') + '/../cellml-api-build'
+            cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/../cellml-api-build'
+            opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/../opencell-build'
             checked_call(['./opencell-build/installers/FinalStageMaker.py', './opencell-build/installers/' + spec + '.spec',
-                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=./opencell-build', 'version=latest',
+                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=latest',
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])

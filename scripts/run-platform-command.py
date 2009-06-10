@@ -33,7 +33,7 @@ def build_new_entry(path):
 
 def add_entry_to_index(index, path):
     return index.replace('<!-- New entries go here -->',
-                         '<li>' + build_new_entry(path + filename) +\
+                         '<li>' + build_new_entry(path) +\
                          "</li>\n<!-- New entries go here -->")
 
 # Get the platform.

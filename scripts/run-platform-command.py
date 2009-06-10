@@ -32,9 +32,9 @@ def build_new_entry(path):
     return '<a href="%s">%s</a>' % (url, date)
 
 def add_entry_to_index(index, path):
-    index.replace('<!-- New entries go here -->',
-                  '<li>' + build_new_entry(path) +\
-                  "</li>\n<!-- New entries go here -->")
+    return index.replace('<!-- New entries go here -->',
+                         '<li>' + build_new_entry(path) +\
+                         "</li>\n<!-- New entries go here -->")
 
 # Get the platform.
 uname = subprocess.Popen(['uname', '-a'], stdout=subprocess.PIPE).stdout.read()

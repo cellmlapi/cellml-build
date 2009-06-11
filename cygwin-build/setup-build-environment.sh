@@ -32,7 +32,7 @@ $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 
 # Set up our buildbot...
 apt-cyg install python
-cd ~
+cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz
 cd ./buildbot-0.7.10p1
@@ -48,6 +48,20 @@ tar -xzf zope.interface-3.3.0.tar.gz
 cd ./zope.interface-3.3.0
 python setup.py install
 cd ..
-echo Enter the password for the buildbot (displays on the screen)
+echo "Enter the password for the buildbot (displays on the screen)"
 read PASSWORD
-buildbot create-slave buildbot-win32 $PASSWORD
+buildbot create-slave win32-buildslave autotest.bioeng.auckland.ac.nz:9989 msvc9-win32-a $PASSWORD
+cd ./win32-buildslave
+cp ./Makefile.sample ./Makefile
+cd ./info
+echo "Andrew Miller <ak.miller@auckland.ac.nz>" >info
+echo "MSVC9 Windows build system" >host
+cd ..
+make
+cd ..
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozilla-central/xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
+unzip ./xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
+wget http://www.alliedquotes.com/mirrors/gnu/gnu/gsl/gsl-1.12.tar.gz
+tar -xzf ./gsl-1.12.tar.gz
+cd ./gsl-1.12
+./configure && make

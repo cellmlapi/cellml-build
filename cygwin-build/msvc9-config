@@ -11,3 +11,6 @@ export PATH="/cygdrive/c/build/msvc9/Common7/IDE:/cygdrive/c/build/msvc9/VC/BIN:
 export INCLUDE="C:\build\msvc9\VC\INCLUDE;$INCLUDE"
 export LIB="C:\build\msvc9\VC\LIB;$LIB"
 export LIBPATH="C:\WINDOWS\Microsoft.NET\Framework\v3.5;C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\build\msvc9\VC\LIB;$LIBPATH"
+export CC=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
+export CXX=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
+export LD=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper

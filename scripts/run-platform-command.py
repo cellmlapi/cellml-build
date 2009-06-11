@@ -62,6 +62,12 @@ if platform == 'linux-x86' or platform == 'linux-x86_64':
     xml_path = '/home/amil082/libxml2-2.6.27/'
     gcc_path = '/home/amil082/gcc-4.1.1/i686-pc-linux-gnu/'
     ship_gcc_path = '/home/amil082/gccprefix'
+elif platform == 'win32':
+    xulrunner_path = 'c:\\build\\xulrunner-sdk'
+    gsl_path = 'c:\\build\\gsl\\'
+    xml_path = 'c:\\build\libxml2\\'
+    gcc_path = 'c:\\build\\gcc'
+    ship_gcc_path = 'c:\\build\\gcc-prefix'
 
 repo = projectRepos[project]
 if project == "cellml-api":
@@ -86,6 +92,7 @@ if command == "test-java":
     path = project + "-java"
     command = "test"
     configureOptions += ["--enable-java"]
+    configureOptions.remove('--enable-context')
 
 if command == "package-java":
     path = project + "-java"

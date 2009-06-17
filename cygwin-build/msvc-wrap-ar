@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# This script only deals with 'x'... use lib for packaging.
+for val in $(lib /NOLOGO /LIST $2 | tr -d "\r"); do lib /EXTRACT:$val $2; done

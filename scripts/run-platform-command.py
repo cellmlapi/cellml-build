@@ -130,14 +130,14 @@ if command == "test":
     else:
         prisrepo = mercurial.hg.repository(ui, project)
         mercurial.commands.pull(ui, project, repo,
-                                update=True)
+                                update=True, rev=None)
     
     if fromPristine:
         mercurial.hg.clone(ui, project, path, stream=None, rev=None, pull=None, update=True)
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)
-        mercurial.commands.pull(ui, path, project, update=True)
+        mercurial.commands.pull(ui, path, project, update=True, rev=None)
 
     # We now have an up-to-date build repo, clobbered if requested. Build it...
     os.chdir(path)

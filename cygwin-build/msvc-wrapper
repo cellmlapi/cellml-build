@@ -169,6 +169,7 @@ elif target == 'object':
 if target == 'dll':
   linkSupArgs.append('/DLL')
   linkSupArgs.append('/NOENTRY')
+  linkSupArgs.append('/FORCE:MULTIPLE')  
   linkSupArgs.append('/IMPLIB:' + re.sub('\-[0-9|\.]+\.dll', '.lib', output))
 
 if autobase == 1:

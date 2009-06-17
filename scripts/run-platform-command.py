@@ -68,6 +68,11 @@ elif platform == 'win32':
     xml_path = 'c:\\build\libxml2\\'
     gcc_path = 'c:\\build\\gcc'
     ship_gcc_path = 'c:\\build\\gcc-prefix'
+elif platform == 'osx-x86':
+    xulrunner_path = '/sw/xulrunner-sdk'
+    gsl_path = '/Users/cmiss/Build/gsl-1.8'
+    xml_path = ''
+    ship_gcc_path = ''
 
 repo = projectRepos[project]
 if project == "cellml-api":

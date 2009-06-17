@@ -39,7 +39,7 @@ for (idx, name) in enumerate(args):
     ccSupArgs.append('/Zi')
     linkSupArgs.append('/DEBUG')
     debug = 1
-  elif name == '-link' or name == '-dll' or name == '-noentry':
+  elif name == '-link' or name == '-noentry':
     pass
   elif name[0:2] == '-o':
     output = name[2:]
@@ -55,7 +55,7 @@ for (idx, name) in enumerate(args):
     target = 'object'
   elif name == '-E':
     target = 'preprocessed'
-  elif name == '-shared':
+  elif name == '-shared' or name == '-dll':
     target = 'dll'
   elif name == '-Wall':
     ccSupArgs.append('/W4')

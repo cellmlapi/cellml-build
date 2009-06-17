@@ -1,5 +1,13 @@
 #!/bin/bash
 
 # This script only deals with 'x'... use lib for packaging.
+
 LIB=$(echo $2 | sed -e "s/\//\\\\/g;s/\\\\cygdrive\\\\c\\\\/c:\\\\/")
-for val in $(lib /NOLOGO /LIST $LIB | tr -d "\r"); do lib /EXTRACT:$val $LIB; done
+
+if [[ $1 == "t" ]]; then
+  lib /NOLOGO /LIST $LIB | sed -e "s/.libs\///"
+elif [[ $1 == "x" ]]; then
+  for val in $(lib /NOLOGO /LIST $LIB | tr -d "\r"); do lib /NOLOGO /EXTRACT:$val $LIB; done
+else
+  echo "Sorry, unknown option $1";
+fi

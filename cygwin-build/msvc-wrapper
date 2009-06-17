@@ -39,6 +39,8 @@ for (idx, name) in enumerate(args):
     ccSupArgs.append('/Zi')
     linkSupArgs.append('/DEBUG')
     debug = 1
+  elif name == '-link' or name == '-dll' or name == '-noentry':
+    pass
   elif name[0:2] == '-o':
     output = name[2:]
     if output == '':
@@ -166,6 +168,7 @@ elif target == 'object':
 
 if target == 'dll':
   linkSupArgs.append('/DLL')
+  linkSupArgs.append('/NOENTRY')
   linkSupArgs.append('/IMPLIB:' + re.sub('\-[0-9|\.]+\.dll', '.lib', output))
 
 if autobase == 1:

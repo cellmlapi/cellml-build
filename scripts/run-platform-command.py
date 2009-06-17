@@ -133,7 +133,7 @@ if command == "test":
                                 update=True)
     
     if fromPristine:
-        mercurial.hg.clone(ui, prisrepo, path, stream=None, rev=None, pull=None, update=True)
+        mercurial.hg.clone(ui, project, path, stream=None, rev=None, pull=None, update=True)
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)

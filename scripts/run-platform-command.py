@@ -57,7 +57,7 @@ deptype = sys.argv[3]
 
 if platform == 'linux-x86' or platform == 'linux-x86_64':
     spec = 'linux'
-    xulrunner_path = '/data/mozilla_trunk/obj-i686-pc-linux-gnu/stablexr/dist'
+    xulrunner_path = '/home/autotest/xulrunner-sdk'
     gsl_path = '/home/amil082/gsl-1.8/'
     xml_path = '/home/amil082/libxml2-2.6.27/'
     gcc_path = '/home/amil082/gcc-4.1.1/i686-pc-linux-gnu/'

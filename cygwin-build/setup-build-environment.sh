@@ -14,7 +14,7 @@ About to install MSVC Expression Edition. Please do the following:
   * Wait for the install to complete.
 END
 $B/downloads/MSVC-CPP-Express-Setup.exe
-echo . $B/physiome-build/cygwin-build/msvc9-config >>~/.bashrc
+echo . $B/physiome-build/cygwin-build/msvc9-config >>~/.profile
 . $B/physiome-build/cygwin-build/msvc9-config
 wget http://download.microsoft.com/download/2/3/f/23f86204-39ee-4cd7-9a51-db19c9a8f8c4/Setup.exe -O $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 chmod u+x $B/downloads/Windows-Platform-SDK-2008-Setup.exe
@@ -31,7 +31,7 @@ END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 
 # Set up our buildbot...
-apt-cyg install python
+apt-cyg install python ed
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz
@@ -61,7 +61,23 @@ make
 cd ..
 wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozilla-central/xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
 unzip ./xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
-wget http://www.alliedquotes.com/mirrors/gnu/gnu/gsl/gsl-1.12.tar.gz
-tar -xzf ./gsl-1.12.tar.gz
-cd ./gsl-1.12
+chmod 0755 /cygdrive/c/build/xulrunner-sdk/bin/xpidl
+
+#wget http://www.alliedquotes.com/mirrors/gnu/gnu/gsl/gsl-1.12.tar.gz
+#tar -xzf ./gsl-1.12.tar.gz
+#cd ./gsl-1.12
+#./configure --build=i686-win32-mingw32
+#ed ./libtool <<EOF
+#,s/max_cmd_len=/max_cmd_len=10000/
+#w 
+#q
+#EOF
+#make
+# wget http://r2d3.geldreich.net/downloads/gsl-1.11-windows-binaries.zip
+
+http://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/libxml2-2.6.30.tar.bz2
+tar -xjf ./libxml2-2.6.30.tar.bz2
+cd ./libxml2-2.6.30
 ./configure && make
+
+ln -s /cygdrive/c/build/xulrunner-sdk/include/ /cygdrive/c/build/xulrunner-sdk/include/xpcom

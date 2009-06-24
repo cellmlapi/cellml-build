@@ -51,7 +51,7 @@ for (idx, name) in enumerate(args):
     print 'Magic words needed to make libtool do the right thing follow:'
     print 'auto-import'
     exit(0)
-  elif name == '-c':
+  elif name == '-c' or name == '-v':
     target = 'object'
   elif name == '-E':
     target = 'preprocessed'

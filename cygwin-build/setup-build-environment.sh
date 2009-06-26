@@ -31,7 +31,7 @@ END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 
 # Set up our buildbot...
-apt-cyg install python ed
+apt-cyg install python ed patch
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz
@@ -63,6 +63,8 @@ wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozi
 unzip ./xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
 chmod 0755 /cygdrive/c/build/xulrunner-sdk/bin/xpidl
 
+for i in /cygdrive/c/build/xulrunner-sdk/bin/*.dll; do cp $i /cygdrive/c/build/xulrunner-sdk/lib/`basename $i`; done
+
 #wget http://www.alliedquotes.com/mirrors/gnu/gnu/gsl/gsl-1.12.tar.gz
 #tar -xzf ./gsl-1.12.tar.gz
 #cd ./gsl-1.12
@@ -75,9 +77,35 @@ chmod 0755 /cygdrive/c/build/xulrunner-sdk/bin/xpidl
 #make
 # wget http://r2d3.geldreich.net/downloads/gsl-1.11-windows-binaries.zip
 
-http://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/libxml2-2.6.30.tar.bz2
+wget http://ftp.gnome.org/pub/GNOME/sources/libxml2/2.6/libxml2-2.6.30.tar.bz2
 tar -xjf ./libxml2-2.6.30.tar.bz2
 cd ./libxml2-2.6.30
-./configure && make
-
-ln -s /cygdrive/c/build/xulrunner-sdk/include/ /cygdrive/c/build/xulrunner-sdk/include/xpcom
+patch -p0 <<END
+--- ./include/win32config.h.old	2009-06-26 11:44:30.250000000 +1200
++++ ./include/win32config.h	2009-06-26 13:07:35.343750000 +1200
+@@ -89,10 +89,12 @@
+ #endif
+ #endif /* _MSC_VER */
+ 
+-#if defined(_MSC_VER) && (_MSC_VER < 1500)
++#if defined(_MSC_VER)
++#if (_MSC_VER < 1500)
+ #define mkdir(p,m) _mkdir(p)
+-#define snprintf _snprintf
+ #define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
++#endif
++#define snprintf _snprintf
+ #elif defined(__MINGW32__)
+ #define mkdir(p,m) _mkdir(p)
+ #endif
+END
+cd win32
+ed ./Makefile.msvc <<EOF
+,s/wsock32.lib/ws2_32.lib/
+w
+q
+EOF
+cscript.exe configure.js iconv=no
+nmake
+cp ./bin.msvc/*.lib /cygdrive/c/build/msvc9/VC/lib/
+cp ./bin.msvc/*.dll /cygdrive/c/WINDOWS/system32/

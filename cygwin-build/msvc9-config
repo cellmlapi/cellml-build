@@ -14,3 +14,4 @@ export LIBPATH="C:\WINDOWS\Microsoft.NET\Framework\v3.5;C:\WINDOWS\Microsoft.NET
 export CC=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
 export CXX=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
 export LD=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
+export AR=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrap-ar

@@ -107,5 +107,5 @@ q
 EOF
 cscript.exe configure.js iconv=no
 nmake
-cp ./bin.msvc/*.lib /cygdrive/c/build/msvc9/VC/lib/
-cp ./bin.msvc/*.dll /cygdrive/c/WINDOWS/system32/
+cp ./bin.msvc/libxml2.lib /cygdrive/c/build/msvc9/VC/lib/xml2.lib
+cp ./bin.msvc/libxml2.dll /cygdrive/c/WINDOWS/system32/xml2.dll

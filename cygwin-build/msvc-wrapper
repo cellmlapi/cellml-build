@@ -20,7 +20,7 @@ def CompileSource(input, output, supArgs):
   print "Calling: " + string.join(args)
   return os.spawnvp(os.P_WAIT, args[0], args)
 
-args = argv[1:]
+args = filter(lambda x: x != "-Xlinker", argv[1:])
 output = ''
 debug = 0
 skipnext = 0
@@ -67,6 +67,9 @@ for (idx, name) in enumerate(args):
     ccSupArgs.append('/O2')
   elif name == '-O3':
     ccSupArgs.append('/Ox')
+  elif name == '--out-implib':
+    ccSupArgs.append('/IMPLIB:' + CygwinToNative(args[idx + 1]))
+    skipnext = 1
   elif name[0:2] == '-I':
     dir = name[2:]
     if dir == '':

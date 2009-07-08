@@ -96,7 +96,7 @@ for (idx, name) in enumerate(args):
   elif name[0] == '-':
     print "Warning: Unrecognised option %s" % name
   else:
-    if target == 'dll' and name[-4:] == '.dll':
+    if target in ['dll', 'executable'] and name[-4:] == '.dll':
       inputs.append(name[:-4] + '.lib')
     else:
       inputs.append(name)

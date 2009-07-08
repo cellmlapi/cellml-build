@@ -68,7 +68,6 @@ for (idx, name) in enumerate(args):
   elif name == '-O3':
     ccSupArgs.append('/Ox')
   elif name == '--out-implib':
-    ccSupArgs.append('/IMPLIB:' + CygwinToNative(args[idx + 1]))
     skipnext = 1
   elif name[0:2] == '-I':
     dir = name[2:]
@@ -97,7 +96,10 @@ for (idx, name) in enumerate(args):
   elif name[0] == '-':
     print "Warning: Unrecognised option %s" % name
   else:
-    inputs.append(name)
+    if target == 'dll' and name[-4:] == '.dll':
+      inputs.append(name[:-4] + '.lib')
+    else:
+      inputs.append(name)
 
 if debug:
   ccSupArgs.append('/MDd')

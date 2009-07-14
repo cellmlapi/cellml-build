@@ -31,7 +31,7 @@ END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 
 # Set up our buildbot...
-apt-cyg install python ed patch
+apt-cyg install python ed patch cppunit
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz
@@ -109,3 +109,4 @@ cscript.exe configure.js iconv=no
 nmake
 cp ./bin.msvc/libxml2.lib /cygdrive/c/build/msvc9/VC/lib/xml2.lib
 cp ./bin.msvc/libxml2.dll /cygdrive/c/WINDOWS/system32/xml2.dll
+cp -R /usr/include/cppunit /cygdrive/c/build/msvc9/VC/include/

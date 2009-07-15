@@ -143,6 +143,8 @@ if command == "test":
     os.chdir(path)
     # To do: set up environment variables.
 
+    os.environ['CFLAGS'] = os.environ['CXXFLAGS'] = '-O2'
+
     if (not os.path.exists('Makefile')) or (os.stat('Makefile').st_mtime < scriptTime):
         checked_call(['aclocal'])
         checked_call(['autoconf'])

@@ -177,7 +177,7 @@ elif command == "package":
     elif java:
         pass
     elif project == "opencell":
-        pathInSVN += platform
+        pathInSVN += platform + "\\"
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", opencell + "installers/opencell-win32.nsi"])
             pathInSVN += "opencell.exe"

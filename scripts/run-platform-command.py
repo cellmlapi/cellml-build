@@ -69,6 +69,7 @@ elif platform == 'win32':
     gcc_path = 'c:\\build\\gcc'
     ship_gcc_path = 'c:\\build\\gcc-prefix'
 elif platform == 'osx-x86':
+    spec = 'osx'
     xulrunner_path = '/sw/xulrunner-sdk'
     gsl_path = '/Users/cmiss/Build/gsl-1.8'
     xml_path = ''

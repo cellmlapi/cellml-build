@@ -73,6 +73,7 @@ elif platform == 'osx-x86':
     xulrunner_path = '/sw/xulrunner-sdk'
     gsl_path = '/Users/cmiss/Build/gsl-1.8'
     xml_path = ''
+    gcc_path = ''
     ship_gcc_path = ''
 
 repo = projectRepos[project]

@@ -179,7 +179,7 @@ elif command == "package":
     elif java:
         pass
     elif project == "opencell":
-        pathInSVN += platform + "\\"
+        pathInSVN += platform + "/"
         if platform == "win32":
             checked_call(["c:\\Program Files\\NSIS\\makensis.exe", opencell + "installers/opencell-win32.nsi"])
             pathInSVN += "opencell.exe"
@@ -191,6 +191,8 @@ elif command == "package":
                           'SHIPGCC=' + ship_gcc_path])
             if platform == "linux-x86":
                 pathInSVN += "opencell-x86_Linux.tar.bz2"
+            elif platform == "osx-x86":
+                pathInSVN += "opencell-i386_OSX.dmg"
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)
     

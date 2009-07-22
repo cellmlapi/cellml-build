@@ -112,6 +112,9 @@ else:
     inputs.append('msvcrt.lib')
     inputs.append('msvcprt.lib')
 
+if target == 'executable':
+  linkSupArgs.append('/SUBSYSTEM:CONSOLE')
+
 if target == 'preprocessed':
   if len(inputs) != 1:
     exit("Can only pre-process a single input file, not %u files" % len(inputs))

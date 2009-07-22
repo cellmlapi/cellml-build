@@ -188,7 +188,7 @@ elif command == "package":
     elif project == "opencell":
         pathInSVN += platform + "/"
         if platform == "win32":
-            checked_call(["cl", "/Fo" + toNative(opencell + "/opencell"), toNative(opencell + "/launcher-win32.c")])
+            checked_call(["cl", "/Fo" + toNative(opencell + "/appSupport/win32/opencell"), toNative(opencell + "/appSupport/win32/launcher-win32.c")])
             checked_call(["/cygdrive/c/Program Files/NSIS/makensis", toNative(opencell + "/installers/opencell-win32.nsi")])
             pathInSVN += "opencell.exe"
         else:

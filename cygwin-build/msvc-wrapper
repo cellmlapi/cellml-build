@@ -45,7 +45,7 @@ for (idx, name) in enumerate(args):
     pass
   elif name == '-def':
     skipnext = 1
-    linkSupArgs.append('/DEF:' + args[idx + 1])
+    linkSupArgs.append('/DEF:' + CygwinToNative(args[idx + 1]))
   elif name[0:2] == '-o':
     output = name[2:]
     if output == '':
@@ -182,7 +182,7 @@ elif target == 'object':
 if target == 'dll':
   linkSupArgs.append('/DLL')
   linkSupArgs.append('/FORCE:MULTIPLE')  
-  linkSupArgs.append('/IMPLIB:' + re.sub('\-[0-9|\.]+\.dll', '.lib', output))
+  linkSupArgs.append('/IMPLIB:' + re.sub('(\-[0-9|\.]+)?\.dll', '.lib', CygwinToNative(output)))
 
 if autobase == 1:
   base = 0x60000000 | ((output.__hash__() << 16) & 0xFFC0000)

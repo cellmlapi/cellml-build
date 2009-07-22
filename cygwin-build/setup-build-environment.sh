@@ -31,7 +31,7 @@ END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 
 # Set up our buildbot...
-apt-cyg install python ed patch
+apt-cyg install python ed patch flex bison
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz
@@ -121,3 +121,4 @@ cp lib/cppunit*.lib /cygdrive/c/build/msvc9/VC/lib/
 cp -R include/cppunit /cygdrive/c/build/msvc9/VC/include/
 mkdir /cygdrive/c/bin
 cp /bin/sh.exe /cygdrive/c/bin/sh.exe
+cp /usr/include/FlexLexer.h /cygdrive/c/build/msvc9/VC/include/

@@ -32,6 +32,8 @@ autobase = 0
 debug = 0
 
 for (idx, name) in enumerate(args):
+  if name=='-v':
+    exit(os.spawnvp(os.P_WAIT, 'cl.exe', ['cl.exe']))
   if skipnext:
     skipnext = 0
     continue

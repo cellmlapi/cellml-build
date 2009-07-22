@@ -43,6 +43,9 @@ for (idx, name) in enumerate(args):
     debug = 1
   elif name == '-link' or name == '-noentry':
     pass
+  elif name == '-def':
+    skipnext = 1
+    linkSupArgs.append('/DEF:' + args[idx + 1])
   elif name[0:2] == '-o':
     output = name[2:]
     if output == '':

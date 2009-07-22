@@ -36,6 +36,13 @@ def add_entry_to_index(index, path):
                          '<li>' + build_new_entry(path) +\
                          "</li>\n<!-- New entries go here -->")
 
+def toNative(cpath):
+    if cpath[0] != '/':
+        return cpath.replace('/', '\\')
+    if cpath[0:10] == '/cygdrive/':
+        return cpath[10] + ':\\' + cpath[12:].replace('/', '\\')
+    return 'c:\\cygwin' + cpath.replace('/', '\\')
+
 # Get the platform.
 uname = subprocess.Popen(['uname', '-a'], stdout=subprocess.PIPE).stdout.read()
 if re.search('mingw32', os.getcwd()):
@@ -181,7 +188,7 @@ elif command == "package":
     elif project == "opencell":
         pathInSVN += platform + "/"
         if platform == "win32":
-            checked_call(["/cygdrive/c/Program Files/NSIS/makensis", opencell + "installers/opencell-win32.nsi"])
+            checked_call(["/cygdrive/c/Program Files/NSIS/makensis", toNative(opencell + "installers/opencell-win32.nsi")])
             pathInSVN += "opencell.exe"
         else:
             checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',

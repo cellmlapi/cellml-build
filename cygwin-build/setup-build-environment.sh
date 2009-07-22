@@ -122,3 +122,7 @@ cp -R include/cppunit /cygdrive/c/build/msvc9/VC/include/
 mkdir /cygdrive/c/bin
 cp /bin/sh.exe /cygdrive/c/bin/sh.exe
 cp /usr/include/FlexLexer.h /cygdrive/c/build/msvc9/VC/include/
+cd /cygdrive/c/build
+wget "http://downloads.sourceforge.net/sourceforge/nsis/nsis-2.45-setup.exe?use_mirror=transact" -O nsis-2.45-setup.exe
+echo "Running NSIS setup. Follow through the prompts and do a default install"
+chmod u+x ./nsis-2.45-setup.exe

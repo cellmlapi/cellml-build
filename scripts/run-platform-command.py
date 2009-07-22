@@ -181,7 +181,7 @@ elif command == "package":
     elif project == "opencell":
         pathInSVN += platform + "/"
         if platform == "win32":
-            checked_call(["c:\\Program Files\\NSIS\\makensis.exe", opencell + "installers/opencell-win32.nsi"])
+            checked_call(["/cygdrive/c/Program Files/NSIS/makensis", opencell + "installers/opencell-win32.nsi"])
             pathInSVN += "opencell.exe"
         else:
             checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',

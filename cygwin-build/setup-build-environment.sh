@@ -62,6 +62,7 @@ cd ..
 wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozilla-central/xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
 unzip ./xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
 chmod 0755 /cygdrive/c/build/xulrunner-sdk/bin/xpidl
+chmod u+x /cygdrive/c/build/xulrunner-sdk/bin/xpt_link
 
 for i in /cygdrive/c/build/xulrunner-sdk/bin/*.dll; do cp $i /cygdrive/c/build/xulrunner-sdk/lib/`basename $i`; done
 

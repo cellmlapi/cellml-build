@@ -95,6 +95,8 @@ for (idx, name) in enumerate(args):
     autobase = 1
   elif name == '-nostdlib':
     pass
+  elif name[0:2] == '-G':
+    ccSupArgs.append('/G' + name[2:])
   elif name[0] == '-':
     print "Warning: Unrecognised option %s" % name
   else:

@@ -166,7 +166,11 @@ elif command == "package":
     if project == "cellml-api":
         # Source code only...
         platform = ""
-    
+
+    try:
+        shutil.rmtree('/tmp/' + project + platform)
+    except OSError:
+        pass
     checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/snapshots/' +\
                   project + '/' + snapshot_branch + '/' + platform, '/tmp/' + project + platform])
 

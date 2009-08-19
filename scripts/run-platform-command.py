@@ -91,6 +91,8 @@ if project == "cellml-api":
                         "--enable-malaes", "--enable-ccgs",
                         "--enable-celeds", "--enable-cis",
                         "--enable-rdf"]
+    if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:
+        configureOptions.append('--enable-gsl-integrators')
 else:
     configureOptions = ["--with-mozilla=" + xulrunner_path,
                         "--with-cellml_api=" + os.getcwd().replace('build_opencell', 'build_api') + '/../cellml-api-build']

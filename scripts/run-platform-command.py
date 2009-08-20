@@ -196,7 +196,7 @@ elif command == "package":
         if platform == "win32":
             checked_call(["cl", "/Fe" + toNative(opencell + "/appSupport/win32/opencell"), toNative(opencell + "/appSupport/win32/launcher-win32.c")])
             checked_call(["/cygdrive/c/Program Files/NSIS/makensis", toNative(opencell + "/installers/opencell-win32.nsi")])
-            pathInSVN += "opencell.exe"
+            pathInSVN += "opencell-win32-installer.exe"
         else:
             checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',
                           'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=latest',

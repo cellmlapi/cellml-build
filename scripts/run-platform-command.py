@@ -2,8 +2,10 @@
 
 # First some configuration...
 projectRepos = {
-    "cellml-api": "http://cellml-api.hg.sourceforge.net/hgroot/cellml-api",
-    "opencell": "http://cellml-opencell.hg.sourceforge.net/hgroot/cellml-opencell"
+    "cellml-api": 
+"http://cellml-api.hg.sourceforge.net/hgroot/cellml-api/cellml-api",
+    "opencell": 
+"http://cellml-opencell.hg.sourceforge.net/hgroot/cellml-opencell/cellml-opencell"
 }
 
 # For now... we need a better way to handle different branches.

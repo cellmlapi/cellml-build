@@ -31,7 +31,7 @@ END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 
 # Set up our buildbot...
-apt-cyg install python ed patch flex bison
+apt-cyg install python ed patch flex bison lapack
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz

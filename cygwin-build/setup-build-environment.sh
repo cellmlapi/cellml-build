@@ -41,7 +41,7 @@ unzip omniORB-4.1.4-x86_win32-vs9.zip
 chmod -R u+x,g+x,o+x ./omniORB-4.1.4
 
 # Set up our buildbot...
-apt-cyg install python ed patch flex bison lapack
+apt-cyg install python ed patch flex bison lapack subversion
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz

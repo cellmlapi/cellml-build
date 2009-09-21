@@ -60,9 +60,15 @@ elif re.search('Darwin.*86 ', uname) != None:
 else:
     platform = 'unknown'
 
+if len(sys.argv) < 4:
+    print "run-platform-command.py [project] [command] [clobber]"
+    quit()
+
 project = sys.argv[1]
 command = sys.argv[2]
 deptype = sys.argv[3]
+
+static = 0
 
 if platform == 'linux-x86' or platform == 'linux-x86_64':
     spec = 'linux'
@@ -111,6 +117,16 @@ if command == "test-java":
     command = "test"
     configureOptions += ["--enable-java"]
     configureOptions.remove('--enable-context')
+
+if command == "build-static":
+    path = project + "-static"
+    command = "test"
+    static = 1
+    configureOptions += ["--enable-static"]
+    configureOptions += ["--disable-shared"]
+    configureOptions += ["--enable-examples=no"]
+    configureOptions.remove('--enable-context')
+    configureOptions.remove("--enable-xpcom=" + xulrunner_path)
 
 if command == "package-java":
     path = project + "-java"
@@ -165,7 +181,8 @@ if command == "test":
         checked_call(['./configure'] + configureOptions)
 
     checked_call(['make'])
-    checked_call(['make', 'check'])
+    if static == 0:
+        checked_call(['make', 'check'])
 elif command == "package":
     if project == "cellml-api":
         # Source code only...

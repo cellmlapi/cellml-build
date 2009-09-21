@@ -30,6 +30,7 @@ linkSupArgs = ['/NOLOGO']
 inputs = []
 autobase = 0
 debug = 0
+static = 0
 
 for (idx, name) in enumerate(args):
   if name=='-v':
@@ -46,6 +47,8 @@ for (idx, name) in enumerate(args):
   elif name == '-def':
     skipnext = 1
     linkSupArgs.append('/DEF:' + CygwinToNative(args[idx + 1]))
+  elif name == "-static":
+    static = 1
   elif name[0:2] == '-o':
     output = name[2:]
     if output == '':
@@ -106,13 +109,17 @@ for (idx, name) in enumerate(args):
     else:
       inputs.append(name)
 
+linktypearg = '/MD'
+if static == 1:
+    linktypearg = '/MT'
+
 if debug:
-  ccSupArgs.append('/MDd')
+  ccSupArgs.append(linktypearg + 'd')
   if target == 'dll' or target == 'executable':
     inputs.append('msvcrtd.lib')
     inputs.append('msvcprtd.lib')
 else:
-  ccSupArgs.append('/MD')
+  ccSupArgs.append(linktypearg)
   if target == 'dll' or target == 'executable':
     inputs.append('msvcrt.lib')
     inputs.append('msvcprt.lib')

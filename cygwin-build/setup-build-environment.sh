@@ -14,6 +14,9 @@ About to install MSVC Expression Edition. Please do the following:
   * Wait for the install to complete.
 END
 $B/downloads/MSVC-CPP-Express-Setup.exe
+echo "Press any key to continue"
+read
+
 echo . $B/physiome-build/cygwin-build/msvc9-config >>~/.profile
 . $B/physiome-build/cygwin-build/msvc9-config
 wget http://download.microsoft.com/download/2/3/f/23f86204-39ee-4cd7-9a51-db19c9a8f8c4/Setup.exe -O $B/downloads/Windows-Platform-SDK-2008-Setup.exe
@@ -29,9 +32,16 @@ About to install the Microsoft Platform SDK 2008. Please do the following:
   * Click Next twice to start the download.
 END
 $B/downloads/Windows-Platform-SDK-2008-Setup.exe
+echo "Press any key to continue"
+read
+
+cd /cygdrive/c/build
+wget "http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.1.4/omniORB-4.1.4-x86_win32-vs9.zip?use_mirror=transact" -O omniORB-4.1.4-x86_win32-vs9.zip
+unzip omniORB-4.1.4-x86_win32-vs9.zip
+chmod -R u+x,g+x,o+x ./omniORB-4.1.4
 
 # Set up our buildbot...
-apt-cyg install python ed patch flex bison lapack
+apt-cyg install python ed patch flex bison lapack subversion
 cd /cygdrive/c/build
 wget http://downloads.sourceforge.net/buildbot/buildbot-0.7.10p1.tar.gz
 tar -xzf ./buildbot-0.7.10p1.tar.gz
@@ -111,7 +121,7 @@ nmake
 cp ./bin.msvc/libxml2.lib /cygdrive/c/build/msvc9/VC/lib/xml2.lib
 cp ./bin.msvc/libxml2.dll /cygdrive/c/WINDOWS/system32/xml2.dll
 cd /cygdrive/c/build/
-wget http://downloads.sourceforge.net/sourceforge/cppunit/cppunit-1.12.1.tar.gz?use_mirror=transact
+wget "http://downloads.sourceforge.net/sourceforge/cppunit/cppunit-1.12.1.tar.gz?use_mirror=transact" -O cppunit-1.12.1.tar.gz
 tar -xzf ./cppunit-1.12.1.tar.gz
 cd ./cppunit-1.12.1
 echo MSVC will now come up - go to Build => Batch Build, build cppunit debug and release, then quit MSVC and press enter when complete.

@@ -1,0 +1,47 @@
+fink install buildbot-py26
+buildbot create-slave osx-buildslave autotest.bioeng.auckland.ac.nz:9989 mac-osx-a <passwordhere>
+echo "Andrew Miller <ak.miller@auckland.ac.nz>" >./osx-buildslave/info/admin
+echo "The Mac OS X buildslave)" >./osx-buildslave/info/host
+cd ./osx-buildslave/
+cp ./Makefile.sample ./Makefile
+cat >/System/Library/LaunchDaemons/buildbot.plist <<END
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>buildbot</string>
+  <key>UserName</key>
+  <string>buildbot</string>
+  <key>GroupName</key>
+  <string>buildbot</string>
+  <key>Program</key>
+  <string>/sw/bin/twistd</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>--no_save</string>
+    <string>-y</string>
+    <string>buildbot.tac</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>WorkingDirectory</key>
+  <string>/Users/buildbot/osx-buildslave</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/sw/bin:/sw/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/g95/bin:/usr/local/g77/bin:/usr/X11R6/bin</string>
+    <key>http_proxy</key>
+    <string>http://proxy.bioeng.auckland.ac.nz:8080/</string>
+    <key>LDFLAGS</key>
+    <string>-Wl,-executable_path -Wl,/sw/xulrunner-sdk/lib</string>
+  </dict>
+</dict>
+</plist>
+END
+cd ~
+wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozilla-central/xulrunner-1.9.2a1pre.en-US.mac-i386.sdk.tar.bz2
+cd /sw/
+tar -xjf ~/xulrunner-1.9.2a1pre.en-US.mac-i386.sdk.tar.bz2
+cd /sw/xulrunner-sdk/lib/
+sudo ar x /sw/xulrunner-sdk/lib/libxpcomglue_s.a

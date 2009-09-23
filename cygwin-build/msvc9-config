@@ -15,3 +15,4 @@ export CC=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
 export CXX=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
 export LD=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrapper
 export AR=/cygdrive/c/build/physiome-build/cygwin-build/msvc-wrap-ar
+export _NT_SYMBOL_PATH="srv*c:\localcache*http://msdl.microsoft.com/download/symbols"

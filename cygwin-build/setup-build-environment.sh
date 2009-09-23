@@ -68,9 +68,11 @@ echo "Andrew Miller <ak.miller@auckland.ac.nz>" >info
 echo "MSVC9 Windows build system" >host
 cd ..
 make
-cd ..
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozilla-central/xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
-unzip ./xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
+cd ~
+wget http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.1.3/sdk/xulrunner-1.9.1.3.en-US.win32.sdk.zip
+unzip ./xulrunner-1.9.1.3.en-US.win32.sdk.zip
+# wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/2009-06-09-03-mozilla-central/xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
+# unzip ./xulrunner-1.9.2a1pre.en-US.win32.sdk.zip
 chmod 0755 /cygdrive/c/build/xulrunner-sdk/bin/xpidl
 chmod u+x /cygdrive/c/build/xulrunner-sdk/bin/xpt_link
 
@@ -136,3 +138,4 @@ cd /cygdrive/c/build
 wget "http://downloads.sourceforge.net/sourceforge/nsis/nsis-2.45-setup.exe?use_mirror=transact" -O nsis-2.45-setup.exe
 echo "Running NSIS setup. Follow through the prompts and do a default install"
 chmod u+x ./nsis-2.45-setup.exe
+mkdir /cygdrive/c/localcache

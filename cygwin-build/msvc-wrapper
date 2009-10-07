@@ -109,6 +109,9 @@ for (idx, name) in enumerate(args):
     else:
       inputs.append(name)
 
+if debug == 0 and target == 'dll':
+  linkSupArgs.append('/DEBUG:PDBONLY')
+
 linktypearg = '/MD'
 if static == 1:
     linktypearg = '/MT'

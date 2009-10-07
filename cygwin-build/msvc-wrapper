@@ -110,7 +110,7 @@ for (idx, name) in enumerate(args):
       inputs.append(name)
 
 if debug == 0 and target == 'dll':
-  linkSupArgs.append('/DEBUG:PDBONLY')
+  linkSupArgs.append('/DEBUG')
 
 linktypearg = '/MD'
 if static == 1:

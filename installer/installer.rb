@@ -1,9 +1,9 @@
 class Installerpage
-  def new(text, buttons)
+  def initialize(text, buttons)
     @text = text
     @buttons = buttons
   end
-  attr :text, :buttons
+  attr_reader :text, :buttons
 end
 
 module Dwnldmgr
@@ -76,7 +76,8 @@ module Dwnldmgr
     
   end
   def makepage page 
-    stack do
+    @currentstack.hide if @currentstack != nil
+    @currentstack = stack do
       page.text.call
       page.buttons.each do |name, action|
         button name do
@@ -225,7 +226,6 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
       projectpage
     },
     lambda {
-      parent.hide
       # set up list of packages to install
       selected_projects = @projects.map { |name, c| name if c.checked? }.compact
       selected_packages = selected_projects.map { |proj| @project2package[proj] }
@@ -236,7 +236,9 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
       order = walk_dependancies(selected_packages, @dependancies, order)        
       # set download location, whether to download
       @downloadlist = []
-      @listloc.append stack do
+    #},
+    #lambda {
+      #@listloc.append stack do
         para "Chose download location, and whether to download"
         order.each do |thing|
           unless @url[thing] == nil
@@ -244,11 +246,9 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
             @downloadlist.push [thing, @q, @r, @s]
           end
         end
-      end
     },
     lambda {
         # "Download"
-          parent.hide
           @to_download = @downloadlist.map { |name, c, d, e| [name, d.text, e.text] if c.checked? }.compact
           # set install location, whether to install
           # download all that need downloading
@@ -298,7 +298,6 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
           #      @nextbutton = button "Install downloaded components", :hidden => true do
         },
         lambda {
-                  parent.hide
                   
                     para "Select list of local packages to install, and the install directories"
                     @install_list = []
@@ -309,7 +308,6 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
          },
          lambda {
                     #@install_button = button "Install packages" do
-                      parent.hide
                       para "Installing..."
                       @to_install = @install_list.map { |name, c, d| [name, d.text] if c.checked? }.compact
 
@@ -324,7 +322,8 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
     ]
   @pagesfinal = [
     Installerpage.new(@pages[0], [["Select packages to download", 1]]),
-    Installerpage.new(@pages[1], [["Select projects", 0], ["Download packages", 2]]),
+    #Installerpage.new(@pages[1], [["Select projects", 0], ["Select download loacation", 2]]),
+    Installerpage.new(@pages[1], [["Select packages to download", 0], ["Download packages", 2]]),
     Installerpage.new(@pages[2], [["Select packages to install", 3]]),
     Installerpage.new(@pages[3], [["Install packages", 4]]),
     Installerpage.new(@pages[4], [[]])

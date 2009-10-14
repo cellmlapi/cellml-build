@@ -204,7 +204,15 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                                      msvc9_config
                                      para "Physiome build scripts installed"  },
     'cppunit'            => lambda { # First uncompress cppunit
-                                     `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'mkdir -p \`cygpath --unix #{@installdir['cppunit']}\` && pwd && cp \`cygpath --unix #{File.join(@packagedir['cppunit'], @localpackage['cppunit'])}\` \`cygpath --unix #{File.join(@installdir['cppunit'], @localpackage['cppunit'])}\` && cd \`cygpath --unix #{@installdir['cppunit']}\` && pwd && tar -xzf #{@localpackage['cppunit']} && mv -r ./cppunit-1.12.1/* ./* && pwd && rm -rf ./cppunit-1.12.1'`
+                                     FileUtils.mkdir_p "#{@installdir['cppunit']}"
+                                     cppunitloci = `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'cygpath --unix "#{@installdir['cppunit']}"'`
+                                     cppunitlocf = cppunitloci + "/" + @localpackage['cppunit']
+                                     cppunitlocp = `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'cygpath --unix "#{File.join(@packagedir['cppunit'], @localpackage['cppunit'])}"'`
+                                     debug "CPPUnit install dir " + cppunitloci
+                                     debug "CPPUnit destination " + cppunitlocf
+                                     debug "CPPUnit package dir " + cppunitlocp
+                                     FileUtils.cp File.join(@packagedir['cppunit'], @localpackage['cppunit']), @installdir['cppunit']
+                                     para `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'pwd && cd "#{cppunitloci}" && pwd && tar -xzf "#{@localpackage['cppunit']}" && mv -r ./cppunit-1.12.1/* ./* && pwd '`
                                      # Run msdev on the included project, building release and debug
                                      # Assume we have  etc on the PATH
                                      #`#{File.join(@installdir["msvc9"], "").to_s} `

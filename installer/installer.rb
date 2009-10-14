@@ -151,11 +151,11 @@ Shoes.app :title => "Setup Physiome build environment" do
     'apt-cyg'            => "c:\\cygwin\\bin",
     'msvc9'              => "c:\\build\\msvc9",
     'windowsplatformsdk' => "c:\\build\\sdk",
-    'omniorb'            => "c:\\build",
+    'omniorb'            => "c:\\build\\omniORB-4.1.4",
     'xulrunner'          => "c:\\build",
     'libxml2'            => "c:\\build",
-    'physiome-build'     => "c:\\build",
-    'cppunit'            => "c:\\build",
+    'physiome-build'     => "c:\\build\\physiome-build",
+    'cppunit'            => "c:\\build\\cppunit",
     'cygwin-packages'    => "c:\\cygwin",
     'cellml-api-source'  => "c:\\build",
     'opencell-source'    => "c:\\build"
@@ -203,14 +203,14 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
     'physiome-build'     => lambda { `#{File.join(@installdir["cygwin"], "bin\\bash.exe")} -login -c "cd #{@installdir['physiome-build']} && rm -rf physiome-build && hg clone http://bitbucket.org/a1kmm/physiome-build/ physiome-build"`
                                      msvc9_config
                                      para "Physiome build scripts installed"  },
-    'cppunit'            => lambda { # First untar cppunit
-                                     para run_cmd_path "#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'cp #{File.join(@installdir['cppunit'], @localpackage['cppunit'])} #{File.join(@packagedir['cppunit'], @localpackage['cppunit'])} && cd #{@packagedir['cppunit']} && untar #{@localpackage['cppunit']}'"
+    'cppunit'            => lambda { # First uncompress cppunit
+                                     `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'mkdir -p \`cygpath --unix #{@installdir['cppunit']}\` && pwd && cp \`cygpath --unix #{File.join(@packagedir['cppunit'], @localpackage['cppunit'])}\` \`cygpath --unix #{File.join(@installdir['cppunit'], @localpackage['cppunit'])}\` && cd \`cygpath --unix #{@installdir['cppunit']}\` && pwd && tar -xzf #{@localpackage['cppunit']} && mv -r ./cppunit-1.12.1/* ./* && pwd && rm -rf ./cppunit-1.12.1'`
                                      # Run msdev on the included project, building release and debug
-                                     # MSDev only seems to be on an outdated version of MSVC
                                      # Assume we have  etc on the PATH
                                      #`#{File.join(@installdir["msvc9"], "").to_s} `
                                      # I have to check what the executable for MSVC9 Pro is
-                                     `VCExpress #{File.join(@installdir["cppunit"],'cppunit-1.12.1\src\CppUnitLibraries.dsw')}`
+                                     #`VCExpress #{File.join(@installdir["cppunit"],'cppunit-1.12.1\src\CppUnitLibraries.dsw')}`
+                                     #`cd #{@installdir['cppunit']} && msdev ` 
                                      # && copy lib/cppunit*.lib '"
                                      para "CPPUnit installed\n" },
     'cellml-api-source'  => lambda { para run_cmd_path "#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'cd #{@installdir['cellml-api-source']} && hg clone http://cellml-api.hg.sourceforge.net:8000/hgroot/cellml-api/cellml-api'" },
@@ -232,15 +232,15 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
       selected_packages.flatten!
       selected_packages.uniq!
       # build a linear order out of dependancies
-      order = []
-      order = walk_dependancies(selected_packages, @dependancies, order)        
+      @order = []
+      @order = walk_dependancies(selected_packages, @dependancies, @order)        
       # set download location, whether to download
       @downloadlist = []
     #},
     #lambda {
       #@listloc.append stack do
         para "Chose download location, and whether to download"
-        order.each do |thing|
+        @order.each do |thing|
           unless @url[thing] == nil
             flow { @q = check :checked => true ; para thing; @r = edit_line @packagedir[thing] ; @s = edit_line @localpackage[thing] }
             @downloadlist.push [thing, @q, @r, @s]
@@ -253,7 +253,7 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
           # set install location, whether to install
           # download all that need downloading
           debug "Downloading stuff now"
-          debug order.join(", ")
+          debug @order.join(", ")
           @total_downloads = @to_download.length
           debug "Total to download " + @total_downloads.to_s
           @total_downloaded = 0
@@ -301,7 +301,7 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                   
                     para "Select list of local packages to install, and the install directories"
                     @install_list = []
-                    order.each do |thing|
+                    @order.each do |thing|
                       flow { @q = check :checked => true ; para thing; @r = edit_line @installdir[thing] }
                       @install_list.push [thing, @q, @r]
                     end
@@ -326,7 +326,7 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
     Installerpage.new(@pages[1], [["Select packages to download", 0], ["Download packages", 2]]),
     Installerpage.new(@pages[2], [["Select packages to install", 3]]),
     Installerpage.new(@pages[3], [["Install packages", 4]]),
-    Installerpage.new(@pages[4], [[]])
+    Installerpage.new(@pages[4], [["Install another project", 0]])
   ]
   makepage @pagesfinal[0]
 end

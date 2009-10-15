@@ -223,8 +223,9 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                                      Dir.chdir(@installdir['cppunit'])
                                      #para `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'pwd && cd "#{cppunitloci}" && pwd && tar -xzf "#{@localpackage['cppunit']}" && mv -r ./cppunit-1.12.1/* ./* && pwd '`
                                      cppunit_archive = Zlib::GzipReader.new(File.open(File.join(@installdir['cppunit'], @localpackage['cppunit']), 'rb'))
-                                     Minitar.unpack(cppunit_archive, 'x')
-
+                                     Minitar.unpack(cppunit_archive, '.')
+                                     FileUtils.mv(File.join(@installdir['cppunit'], 'cppunit-1.12.1', '*'), File.join(@installdir['cppunit'], '*'))
+                                     
                                      # Run msdev on the included project, building release and debug
                                      # Assume we have  etc on the PATH
                                      #`#{File.join(@installdir["msvc9"], "").to_s} `

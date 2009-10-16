@@ -215,6 +215,7 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                                      msvc9_config
                                      para "Physiome build scripts installed"  },
     'cppunit'            => lambda { # First uncompress cppunit
+                                     FileUtils.rm_rf(@installdir['cppunit']) if File.exists?(@installdir['cppunit'])
                                      FileUtils.mkdir_p @installdir['cppunit']
                                      #cppunitloci = `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'cygpath --unix "#{@installdir['cppunit']}"'`
                                      #cppunitlocf = cppunitloci + "/" + @localpackage['cppunit']
@@ -231,11 +232,15 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                                      debug Dir.glob(newpath + '//cppunit-1.12.1//*')
                                      Dir.glob(newpath + '//cppunit-1.12.1//*') { |file| FileUtils.mv(file, @installdir['cppunit']) }
                                      FileUtils.rm_rf(newpath + '//cppunit-1.12.1')
-                                     FileUtils.rm(newpath + '//cppunit-1.12.1.tar')
+                                     FileUtils.rm(newpath + '//cppunit-1.12.1.tar') if File.exists?(newpath + '//cppunit-1.12.1.tar')
                                      # Run msdev on the included project, building release and debug
                                      # Assume we have  etc on the PATH
                                      #`#{File.join(@installdir["msvc9"], "").to_s} `
                                      # I have to check what the executable for MSVC9 Pro is
+
+                                     # Just use VCExpress at the moment.
+                                     run_cmd_path "VCExpress #{File.join(@installdir["cppunit"],'src\CppUnitLibraries.dsw')}"
+
                                      #`VCExpress #{File.join(@installdir["cppunit"],'cppunit-1.12.1\src\CppUnitLibraries.dsw')}`
                                      #`cd #{@installdir['cppunit']} && msdev ` 
                                      # && copy lib/cppunit*.lib '"

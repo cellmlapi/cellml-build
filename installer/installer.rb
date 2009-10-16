@@ -15,6 +15,9 @@ class Installerpage
 end
 
 module Dwnldmgr
+  def make_globready path
+    path.gsub('\\', '//')
+  end
   def walk_dependancies(all, dependancies, done)
     debug "All"
     debug all.join(", ")
@@ -224,8 +227,11 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                                      #para `#{File.join(@installdir['cygwin'], 'bin\\bash.exe')} -login -c 'pwd && cd "#{cppunitloci}" && pwd && tar -xzf "#{@localpackage['cppunit']}" && mv -r ./cppunit-1.12.1/* ./* && pwd '`
                                      cppunit_archive = Zlib::GzipReader.new(File.open(File.join(@installdir['cppunit'], @localpackage['cppunit']), 'rb'))
                                      Minitar.unpack(cppunit_archive, '.')
-                                     FileUtils.mv(File.join(@installdir['cppunit'], 'cppunit-1.12.1', '*'), File.join(@installdir['cppunit'], '*'))
-                                     
+                                     newpath = make_globready @installdir['cppunit']
+                                     debug Dir.glob(newpath + '//cppunit-1.12.1//*')
+                                     Dir.glob(newpath + '//cppunit-1.12.1//*') { |file| FileUtils.mv(file, @installdir['cppunit']) }
+                                     FileUtils.rm_rf(newpath + '//cppunit-1.12.1')
+                                     FileUtils.rm(newpath + '//cppunit-1.12.1.tar')
                                      # Run msdev on the included project, building release and debug
                                      # Assume we have  etc on the PATH
                                      #`#{File.join(@installdir["msvc9"], "").to_s} `

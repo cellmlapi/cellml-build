@@ -88,21 +88,21 @@ module Dwnldmgr
   end
   def makepage page 
     @currentstack.hide if @currentstack != nil
+    @next_buttons = []
     @currentstack = stack do
       page.text.call
       page.buttons.each do |name, action|
-        button name do
+        @next_buttons.push(button name do
           makepage @pagesfinal[action]
-        end
+        end)
       end
     end   
   end
   def projectpage
-    @projects.map! do |project|
+    @check_projects = @projects.map do |project|
       flow { @c = check; para project }
       [project, @c]
     end
-
   end
   
 end
@@ -265,7 +265,7 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
     },
     lambda {
       # set up list of packages to install
-      selected_projects = @projects.map { |name, c| name if c.checked? }.compact
+      selected_projects = @check_projects.map { |name, c| name if c.checked? }.compact
       selected_packages = selected_projects.map { |proj| @project2package[proj] }
       selected_packages.flatten!
       selected_packages.uniq!
@@ -317,15 +317,15 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                       :progress => proc { |dl| 
                         d.text = "Transferred #{dl.transferred} of #{dl.length} bytes (#{dl.percent}%)"
                         p.fraction = dl.percent * 0.01 
-                        @nextbutton.hide },
+                        @next_buttons[0].hide },
                       :finish => proc { |dl|
                         d.text = "Download completed"
                         @total_downloaded += 1
                         debug "Another one downloaded; now we have " + @total_downloaded.to_s
                         if @total_downloaded == @total_downloads
-                          @nextbutton.show
+                          @next_buttons[0].show
                         else
-                          @nextbutton.hide
+                          @next_buttons[0].hide
                         end  }
                   end
                 end
@@ -361,7 +361,7 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
   @pagesfinal = [
     Installerpage.new(@pages[0], [["Select packages to download", 1]]),
     #Installerpage.new(@pages[1], [["Select projects", 0], ["Select download loacation", 2]]),
-    Installerpage.new(@pages[1], [["Select packages to download", 0], ["Download packages", 2]]),
+    Installerpage.new(@pages[1], [["Select projects", 0], ["Download packages", 2], ["Skip download step", 3]]),
     Installerpage.new(@pages[2], [["Select packages to install", 3]]),
     Installerpage.new(@pages[3], [["Install packages", 4]]),
     Installerpage.new(@pages[4], [["Install another project", 0]])

@@ -163,8 +163,8 @@ Shoes.app :title => "Setup Physiome build environment" do
     'msvc9'              => "c:\\build\\msvc9",
     'windowsplatformsdk' => "c:\\build\\sdk",
     'omniorb'            => "c:\\build\\omniORB-4.1.4",
-    'xulrunner'          => "c:\\build",
-    'libxml2'            => "c:\\build",
+    'xulrunner'          => "c:\\build\\xulrunner-sdk",
+    'libxml2'            => "c:\\build\\libxml2",
     'physiome-build'     => "c:\\build\\physiome-build",
     'cppunit'            => "c:\\build\\cppunit",
     'cygwin-packages'    => "c:\\cygwin",
@@ -239,8 +239,14 @@ EOF && cscript.exe configure.js iconv=no && nmake && cp ./bin.msvc/libxml2.lib /
                                      # I have to check what the executable for MSVC9 Pro is
 
                                      # Just use VCExpress at the moment.
-                                     run_cmd_path "VCExpress #{File.join(@installdir["cppunit"],'src\CppUnitLibraries.dsw')}"
+                                     run_cmd_path "VCExpress #{File.join(@installdir["cppunit"],'src//CppUnitLibraries.dsw')}"
+                                     
 
+
+                                     # Copy the resulting files to where they are needed
+                                     resulting_list = Dir.glob(make_globready File.join(@installdir['cppunit'], 'lib//cppunit*.lib'))
+                                     FileUtils.cp(resulting_list, File.join(@installdir['msvc'], 'VC//lib'))
+                                     FileUtils.cp(File.join(@installdir['cppunit'], 'include//cppunit'), File.join(@installdir['msvc'], 'VC//include'))
                                      #`VCExpress #{File.join(@installdir["cppunit"],'cppunit-1.12.1\src\CppUnitLibraries.dsw')}`
                                      #`cd #{@installdir['cppunit']} && msdev ` 
                                      # && copy lib/cppunit*.lib '"

@@ -76,7 +76,7 @@ unzip ./xulrunner-1.9.1.3.en-US.win32.sdk.zip
 chmod 0755 /cygdrive/c/build/xulrunner-sdk/bin/xpidl
 chmod u+x /cygdrive/c/build/xulrunner-sdk/bin/xpt_link
 
-for i in /cygdrive/c/build/xulrunner-sdk/bin/*.dll; do cp $i /cygdrive/c/build/xulrunner-sdk/lib/`basename $i`; done
+for i in /cygdrive/c/build/xulrunner-sdk/bin/*.dll; do chmod u+x,g+x,o+x $i; cp $i /cygdrive/c/build/xulrunner-sdk/lib/`basename $i`; done
 
 #wget http://www.alliedquotes.com/mirrors/gnu/gnu/gsl/gsl-1.12.tar.gz
 #tar -xzf ./gsl-1.12.tar.gz

@@ -208,7 +208,7 @@ for i in inputs:
 print "Calling: " + string.join(args)
 ret = os.spawnvp(os.P_WAIT, args[0], args)
 if ret == 0:
-  args = ['mt.exe', '-identity', os.path.basename(output) + ', version=0.0.0.0, type=win32', '-MANIFEST', CygwinToNative(output) + '.manifest', '-OUTPUTRESOURCE:' + CygwinToNative(output) + ';1']
+  args = ['mt.exe', '-identity:' + os.path.basename(output) + ', version=0.0.0.0, type=win32', '-MANIFEST', CygwinToNative(output) + '.manifest', '-OUTPUTRESOURCE:' + CygwinToNative(output) + (target=='dll' ? ';2' : ';1')]
   print "Calling: " + string.join(args)
   ret = os.spawnvp(os.P_WAIT, args[0], args)
 exit(ret)

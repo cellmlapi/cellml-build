@@ -160,6 +160,8 @@ if command == "test":
         prisrepo = mercurial.hg.repository(ui, project)
         mercurial.commands.pull(ui, prisrepo, repo,
                                 update=True, rev=None, force=None)
+
+    print ("Pristine repository tip: %s" % repo[len(repo) - 1].__repr__())
     
     if fromPristine:
         mercurial.hg.clone(ui, project, path, stream=None, rev=None, pull=None, update=True)

@@ -184,12 +184,12 @@ if command == "test":
     os.environ['CFLAGS'] = os.environ['CXXFLAGS'] = os.environ['LDFLAGS'] = '-O2'
 
     if (not os.path.exists('Makefile')) or (os.stat('Makefile').st_mtime < scriptTime):
-        checked_call(['aclocal'])
+        checked_call(['aclocal'], 'libIDL.m4')
         checked_call(['autoconf'])
         checked_call(['automake'])
         checked_call(['./configure'] + configureOptions)
 
-    checked_call(['make'], "LAPACK not available|WIN32.*macro redefinition|unsafe mix.*bool.*PRBool|yywrap.*Already defined|Directory component ignored|locally defined symbol|LNK4088|checking for undefined symbols may be affected|xulrunner-sdk.*Current.*Does not exist")
+    checked_call(['make'], "LAPACK not available|WIN32.*macro redefinition|unsafe mix.*bool.*PRBool|yywrap.*Already defined|Directory component ignored|locally defined symbol|LNK4088|checking for undefined symbols may be affected|xulrunner-sdk.*Current.*Does not exist|No debug map|libtool.*seems to be moved")
     if static == 0:
         checked_call(['make', 'check'])
 elif command == "package":

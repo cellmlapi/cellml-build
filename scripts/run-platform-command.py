@@ -12,11 +12,18 @@ projectRepos = {
 snapshot_branch = 'trunk'
 
 # Now the script proper...
-import sys, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
+import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
 
-def checked_call(cmd):
+def checked_call(cmd, filterout="alloweverything"):
     print 'Executing ' + string.join(cmd, ' ')
-    if subprocess.call(cmd) != 0:
+    docmd = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    outfilter = subprocess.Popen(['grep', '-vE', filterout], stdin=docmd.stdout)
+    errfilter = subprocess.Popen(['grep', '-vE', filterout], stdin=docmd.stderr)
+    while True:
+        if outfilter.poll() != None and errfilter.poll() != None and docmd.poll() != None:
+            break
+        time.sleep(0.1)
+    if docmd.returncode != 0:
         print 'Error: ' + cmd[0] + ' failed.'
         sys.exit(1)
 
@@ -182,7 +189,7 @@ if command == "test":
         checked_call(['automake'])
         checked_call(['./configure'] + configureOptions)
 
-    checked_call(['make'])
+    checked_call(['make'], "LAPACK not available|WIN32.*macro redefinition|unsafe mix.*bool.*PRBool|yywrap.*Already defined|Directory component ignored|locally defined symbol|LNK4088|checking for undefined symbols may be affected|xulrunner-sdk.*Current.*Does not exist")
     if static == 0:
         checked_call(['make', 'check'])
 elif command == "package":

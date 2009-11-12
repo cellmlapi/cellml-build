@@ -189,9 +189,9 @@ if command == "test":
         checked_call(['automake'])
         checked_call(['./configure'] + configureOptions)
 
-    checked_call(['make'], "LAPACK not available|WIN32.*macro redefinition|unsafe mix.*bool.*PRBool|yywrap.*Already defined|Directory component ignored|locally defined symbol|LNK4088|checking for undefined symbols may be affected|xulrunner-sdk.*Current.*Does not exist|No debug map|libtool.*seems to be moved|sundials.*C470")
+    checked_call(['make'], "LAPACK not available|WIN32.*macro redefinition|unsafe mix.*bool.*PRBool|yywrap.*Already defined|Directory component ignored|locally defined symbol|LNK4088|checking for undefined symbols may be affected|xulrunner-sdk.*Current.*does not exist|No debug map|libtool.*seems to be moved|sundials.*C470")
     if static == 0:
-        checked_call(['make', 'check'], 'WIN32.*macro redefinition')
+        checked_call(['make', 'check'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
 elif command == "package":
     if project == "cellml-api":
         # Source code only...

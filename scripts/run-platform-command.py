@@ -236,6 +236,7 @@ elif command == "package":
                 pathInSVN += "opencell-x86_Linux.tar.bz2"
             elif platform == "osx-x86":
                 pathInSVN += "opencell-i386_OSX.dmg"
+    checked_call(['svn', 'up', '/tmp/' + project + platform])
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)
     

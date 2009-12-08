@@ -16,4 +16,4 @@ export CC=@physiomebuild/cygwin-build/msvc-wrapper
 export CXX=@physiomebuild/cygwin-build/msvc-wrapper
 export LD=@physiomebuild/cygwin-build/msvc-wrapper
 export AR=@physiomebuild/cygwin-build/msvc-wrap-ar
-export _NT_SYMBOL_PATH="srv*c:\localcache*http://msdl.microsoft.com/download/symbols"
+export _NT_SYMBOL_PATH="srv*c:\localcache*http://msdl.microsoft.com/download/symbols;c:\build\win32-buildslave\clean_build_api-msvc9-win32-a\cellml-api-build;c:\build\win32-buildslave\clean_build_api-msvc9-win32-a\cellml-api-build\.libs;c:\build\win32-buildslave\clean_build_opencell-msvc9-win32-a\opencell-build"

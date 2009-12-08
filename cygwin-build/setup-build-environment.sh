@@ -139,3 +139,7 @@ wget "http://downloads.sourceforge.net/sourceforge/nsis/nsis-2.45-setup.exe?use_
 echo "Running NSIS setup. Follow through the prompts and do a default install"
 chmod u+x ./nsis-2.45-setup.exe
 mkdir /cygdrive/c/localcache
+
+mkdir /cygdrive/c/build/redist
+cd /cygdrive/c/build/redist
+wget http://download.microsoft.com/download/1/1/1/1116b75a-9ec3-481a-a3c8-1777b5381140/vcredist_x86.exe

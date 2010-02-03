@@ -68,12 +68,19 @@ else:
     platform = 'unknown'
 
 if len(sys.argv) < 4:
-    print "run-platform-command.py [project] [command] [clobber]"
+    print "run-platform-command.py [project] [command] [clobber|depend][,valgrind]"
     quit()
 
 project = sys.argv[1]
 command = sys.argv[2]
-deptype = sys.argv[3]
+options = sys.argv[3].split(',')
+
+def firstWithDefault(f, d, x):
+    l = filter(f, d, x)
+    if len(l) == 0: d else: l.pop()
+
+deptype = firstWithDefault(lambda x: x == "clobber" or x == "depend", "depend", options)
+testtype = firstWithDefault(lambda x: x == "rawcpu" or x == "valgrind", "rawcpu", options)
 
 static = 0
 
@@ -191,7 +198,11 @@ if command == "test":
 
     checked_call(['make'], "LAPACK not available|WIN32.*macro redefinition|unsafe mix.*bool.*PRBool|yywrap.*Already defined|Directory component ignored|locally defined symbol|LNK4088|checking for undefined symbols may be affected|xulrunner-sdk.*Current.*does not exist|No debug map|libtool.*seems to be moved|sundials.*C470")
     if static == 0:
-        checked_call(['make', 'check'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
+        if testtype == "rawcpu":
+            checked_call(['make', 'check'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
+        else:
+            checked_call(['make', 'check', 'TESTS_ENVIRONMENT=./tests/ValgrindWrapper'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
+        
 elif command == "package":
     if project == "cellml-api":
         # Source code only...

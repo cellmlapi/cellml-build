@@ -78,9 +78,9 @@ options = sys.argv[3].split(',')
 def firstWithDefault(f, d, x):
     l = filter(f, x)
     if len(l) == 0:
-        d
+        return d
     else:
-        l.pop()
+        return l.pop()
 
 deptype = firstWithDefault(lambda x: x == "clobber" or x == "depend", "depend", options)
 testtype = firstWithDefault(lambda x: x == "rawcpu" or x == "valgrind", "rawcpu", options)

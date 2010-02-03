@@ -76,7 +76,7 @@ command = sys.argv[2]
 options = sys.argv[3].split(',')
 
 def firstWithDefault(f, d, x):
-    l = filter(f, d, x)
+    l = filter(f, x)
     if len(l) == 0:
         d
     else:

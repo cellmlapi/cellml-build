@@ -195,8 +195,10 @@ if command == "test":
         buildrepo = mercurial.hg.repository(ui, path)
         mercurial.commands.pull(ui, buildrepo, project, update=True, force=None)
     mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
-    print ("Build repository current branch: %s" % mercurial.commands.branch(ui, buildrepo))
-    print ("Build repository current status: %s" % mercurial.commands.status(ui, buildrepo))
+    print ("Build repository current branch: ")
+    mercurial.commands.branch(ui, buildrepo)
+    #print ("Build repository current status: ")
+    #mercurial.commands.status(ui, buildrepo)
 
 
     # We now have an up-to-date build repo, clobbered if requested. Build it...

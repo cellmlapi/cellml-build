@@ -194,7 +194,7 @@ if command == "test":
     else:
         buildrepo = mercurial.hg.repository(ui, path)
         mercurial.commands.pull(ui, buildrepo, project, update=True, rev=version, force=None)
-    mercurial.commands.update(ui, buildrepo, rev=revision, clean=True)
+    mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
     print ("Build repository current branch: %s" % mercurial.commands.branch(ui, buildrepo))
     print ("Build repository current status: %s" % mercurial.commands.status(ui, buildrepo))
 

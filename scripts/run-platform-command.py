@@ -178,22 +178,22 @@ if fromPristine and (command == "package"):
 if command == "test":
     ui = mercurial.ui.ui()
     if mkPristine:
-        mercurial.hg.clone(ui, repo, project, stream=None, rev=version,
+        mercurial.hg.clone(ui, repo, project, stream=None,
                            pull=None, update=True)
         prisrepo = mercurial.hg.repository(ui, project)
     else:
         prisrepo = mercurial.hg.repository(ui, project)
         mercurial.commands.pull(ui, prisrepo, repo,
-                                update=True, rev=version, force=None)
+                                update=True, force=None)
     
     print ("Pristine repository tip: %s" % hex(prisrepo.filectx(prisrepo, '.').node()))
         
     if fromPristine:
-        mercurial.hg.clone(ui, project, path, stream=None, rev=version, pull=None, update=True)
+        mercurial.hg.clone(ui, project, path, stream=None, pull=None, update=True)
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)
-        mercurial.commands.pull(ui, buildrepo, project, update=True, rev=version, force=None)
+        mercurial.commands.pull(ui, buildrepo, project, update=True, force=None)
     mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
     print ("Build repository current branch: %s" % mercurial.commands.branch(ui, buildrepo))
     print ("Build repository current status: %s" % mercurial.commands.status(ui, buildrepo))

@@ -18,7 +18,7 @@ projectVersions = {
 snapshot_branch = 'trunk'
 
 # Now the script proper...
-import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
+import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, mercurial.node.hex, subprocess, re, datetime, string
 
 def checked_call(cmd, filterout="alloweverything"):
     print 'Executing ' + string.join(cmd, ' ')
@@ -185,7 +185,7 @@ if command == "test":
         mercurial.commands.pull(ui, prisrepo, repo,
                                 update=True, rev=version, force=None)
 
-    print ("Pristine repository tip: %s" % repo[len(repo) - 1].__repr__())
+    print ("Pristine repository tip: %s" % hex(prisrepo.filectx(prisrepo, '.').node()))
     
     if fromPristine:
         mercurial.hg.clone(ui, project, path, stream=None, rev=version, pull=None, update=True)

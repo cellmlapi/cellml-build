@@ -18,7 +18,8 @@ projectVersions = {
 snapshot_branch = 'trunk'
 
 # Now the script proper...
-import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, mercurial.node.hex, subprocess, re, datetime, string
+import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
+from mercurial.node import hex
 
 def checked_call(cmd, filterout="alloweverything"):
     print 'Executing ' + string.join(cmd, ' ')

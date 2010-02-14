@@ -179,17 +179,17 @@ if command == "test":
     ui = mercurial.ui.ui()
     if mkPristine:
         mercurial.hg.clone(ui, repo, project, stream=None,
-                           pull=None, update=True)
+                           pull=None, update=True, rev=None)
         prisrepo = mercurial.hg.repository(ui, project)
     else:
         prisrepo = mercurial.hg.repository(ui, project)
         mercurial.commands.pull(ui, prisrepo, repo,
-                                update=True, force=None)
+                                update=True, force=None, rev=None)
     
     print ("Pristine repository tip: %s" % hex(prisrepo.filectx(prisrepo, '.').node()))
         
     if fromPristine:
-        mercurial.hg.clone(ui, project, path, stream=None, pull=None, update=True)
+        mercurial.hg.clone(ui, project, path, stream=None, rev=None, pull=None, update=True)
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)

@@ -13,6 +13,11 @@ projectVersions = {
     "opencell": 
 "0.7"
 }
+projectRevisions = {
+    "cellml-api":  None,
+    "opencell":    "35eab7614e06"
+}
+
 
 # For now... we need a better way to handle different branches.
 snapshot_branch = 'trunk'
@@ -194,8 +199,11 @@ if command == "test":
     else:
         buildrepo = mercurial.hg.repository(ui, path)
         mercurial.commands.pull(ui, buildrepo, project, update=True, force=None)
-    mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
-    print ("Build repository current branch: ")
+    if projectRevisions[project] != None:
+      mercurial.commands.update(ui, buildrepo, rev=projectRevisions[project], clean=True)
+    else:
+      mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
+    print "Build repository current branch: "
     mercurial.commands.branch(ui, buildrepo)
     #print ("Build repository current status: ")
     #mercurial.commands.status(ui, buildrepo)

@@ -2,12 +2,11 @@
 
 # This script only deals with 'x'... use lib for packaging.
 
-LIB=$(echo $2 | sed -e "s/\//\\\\/g;s/\\\\cygdrive\\\\c\\\\/c:\\\\/")
-
+LIB=$(echo $2 | sed -e "s/\//\\\\/g;s/\\\\cygdrive\\\\\\([a-z|A-Z]\\)\\\\/\\1:\\\\/")
 if [[ $1 == "t" ]]; then
-  lib /NOLOGO /LIST $LIB | sed -e "s/.libs\///"
+  lib /NOLOGO /LIST "$LIB" | sed -e "s/.libs\///"
 elif [[ $1 == "x" ]]; then
-  for val in $(lib /NOLOGO /LIST $LIB | tr -d "\r"); do lib /NOLOGO /EXTRACT:$val $LIB; done
+  for val in $(lib /NOLOGO /LIST $LIB | tr -d "\r"); do lib /NOLOGO /EXTRACT:$val "$LIB"; done
 else
   echo "Sorry, unknown option $1";
 fi

@@ -7,12 +7,24 @@ projectRepos = {
     "opencell": 
 "http://cellml-opencell.hg.sourceforge.net/hgroot/cellml-opencell/cellml-opencell"
 }
+projectVersions = {
+    "cellml-api": 
+"1.7",
+    "opencell": 
+"0.7"
+}
+projectRevisions = {
+    "cellml-api":  None,
+    "opencell":    "35eab7614e06"
+}
+
 
 # For now... we need a better way to handle different branches.
 snapshot_branch = 'trunk'
 
 # Now the script proper...
 import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
+from mercurial.node import hex
 
 def checked_call(cmd, filterout="alloweverything"):
     print 'Executing ' + string.join(cmd, ' ')
@@ -109,6 +121,7 @@ elif platform == 'osx-x86':
     ship_gcc_path = ''
 
 repo = projectRepos[project]
+version = projectVersions[project]
 if project == "cellml-api":
     configureOptions = ["--enable-xpcom=" + xulrunner_path, "--enable-context",
                         "--enable-annotools", "--enable-cuses",
@@ -170,22 +183,31 @@ if fromPristine and (command == "package"):
 if command == "test":
     ui = mercurial.ui.ui()
     if mkPristine:
-        mercurial.hg.clone(ui, repo, project, stream=None, rev=None,
-                           pull=None, update=True)
+        mercurial.hg.clone(ui, repo, project, stream=None,
+                           pull=None, update=True, rev=None)
         prisrepo = mercurial.hg.repository(ui, project)
     else:
         prisrepo = mercurial.hg.repository(ui, project)
         mercurial.commands.pull(ui, prisrepo, repo,
-                                update=True, rev=None, force=None)
-
-    print ("Pristine repository tip: %s" % repo[len(repo) - 1].__repr__())
+                                update=True, force=None, rev=None)
     
+    print ("Pristine repository tip: %s" % hex(prisrepo.filectx(prisrepo, '.').node()))
+        
     if fromPristine:
         mercurial.hg.clone(ui, project, path, stream=None, rev=None, pull=None, update=True)
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)
-        mercurial.commands.pull(ui, buildrepo, project, update=True, rev=None, force=None)
+        mercurial.commands.pull(ui, buildrepo, project, update=True, force=None)
+    if projectRevisions[project] != None:
+      mercurial.commands.update(ui, buildrepo, rev=projectRevisions[project], clean=True)
+    else:
+      mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
+    print "Build repository current branch: "
+    mercurial.commands.branch(ui, buildrepo)
+    #print ("Build repository current status: ")
+    #mercurial.commands.status(ui, buildrepo)
+
 
     # We now have an up-to-date build repo, clobbered if requested. Build it...
     os.chdir(path)
@@ -242,7 +264,7 @@ elif command == "package":
             checked_call(["mv", opencell + "/installers/opencell-win32-installer.exe", "opencell-win32-installer.exe"])
         else:
             checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',
-                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=latest',
+                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=' + projectVersions['opencell'],
                           'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])

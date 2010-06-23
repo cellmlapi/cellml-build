@@ -9,13 +9,13 @@ projectRepos = {
 }
 projectVersions = {
     "cellml-api": 
-"1.7",
+"default",
     "opencell": 
-"0.7"
+"default"
 }
 projectRevisions = {
     "cellml-api":  None,
-    "opencell":    "35eab7614e06"
+    "opencell":    None
 }
 
 

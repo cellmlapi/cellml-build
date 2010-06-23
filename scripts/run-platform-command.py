@@ -198,7 +198,7 @@ if command == "test":
         buildrepo = mercurial.hg.repository(ui, path)
     else:
         buildrepo = mercurial.hg.repository(ui, path)
-        mercurial.commands.pull(ui, buildrepo, project, update=True, force=None)
+        mercurial.commands.pull(ui, buildrepo, project, update=True, force=None, rev=None)
     if projectRevisions[project] != None:
       mercurial.commands.update(ui, buildrepo, rev=projectRevisions[project], clean=True)
     else:

@@ -227,8 +227,8 @@ if command == "test":
             checked_call(['make', 'check'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
         else:
             checked_call(['make', 'check', 'TESTS_ENVIRONMENT=./tests/ValgrindWrapper'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
-finalPart = ''
 elif command == "package":
+    finalPart = ''
     if project == "cellml-api":
         # Source code only...
         platform = ""

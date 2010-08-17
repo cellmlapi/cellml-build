@@ -9,9 +9,9 @@ projectRepos = {
 }
 projectVersions = {
     "cellml-api": 
-"default",
+"1.8",
     "opencell": 
-"default"
+"0.8"
 }
 projectRevisions = {
     "cellml-api":  None,
@@ -20,7 +20,7 @@ projectRevisions = {
 
 
 # For now... we need a better way to handle different branches.
-snapshot_branch = 'trunk'
+snapshot_branch = 'branches/0.8'
 
 # Now the script proper...
 import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
@@ -250,9 +250,9 @@ elif command == "package":
 
     os.chdir('/tmp/' + project + platform)
     if project == 'cellml-api':
-        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api.tar.bz2',
+        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-1.8.tar.bz2',
                       '-C', cellml_api, project])
-        pathInSVN += "cellml-api.tar.bz2"
+        finalPart = "cellml-api-1.8.tar.bz2"
     elif java:
         pass
     elif project == "opencell":
@@ -260,8 +260,8 @@ elif command == "package":
         if platform == "win32":
             checked_call(["cl", "/Fe" + toNative(opencell + "/appSupport/win32/opencell"), toNative(opencell + "/appSupport/win32/launcher-win32.c")])
             checked_call(["/cygdrive/c/Program Files/NSIS/makensis", toNative(opencell + "/installers/opencell-win32.nsi")])
-            pathInSVN += "opencell-win32-installer.exe"
-            checked_call(["mv", opencell + "/installers/opencell-win32-installer.exe", "opencell-win32-installer.exe"])
+            finalPart = "opencell-win32-installer-0.8.exe"
+            checked_call(["mv", opencell + "/installers/opencell-win32-installer.exe", "opencell-win32-installer-0.8.exe"])
         else:
             checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',
                           'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=' + projectVersions['opencell'],
@@ -269,11 +269,15 @@ elif command == "package":
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])
             if platform == "linux-x86":
-                pathInSVN += "opencell-x86_Linux.tar.bz2"
+                finalPart += "opencell-x86_Linux-0.8.tar.bz2"
+                checked_call(["mv", "opencell-x86_Linux.tar.bz2", "opencell-x86_Linux-0.8.tar.bz2"])
             elif platform == "osx-x86":
-                pathInSVN += "opencell-i386_OSX.dmg"
+                finalPart += "opencell-i386_OSX-0.8.dmg"
+                checked_call(["mv", "opencell-i386_OSX.dmg", "opencell-i386_OSX-0.8.dmg"])
+    pathInSVN += finalPart
     checked_call(['svn', 'up', '/tmp/' + project + platform])
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)
-    
+    # Add the program, in case this is the first invocation on this branch.
+    checked_call(['svn', 'add', finalPart])
     checked_call(['svn', 'commit', '-m', 'Added a newly built snapshot'])

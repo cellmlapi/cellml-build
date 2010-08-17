@@ -227,7 +227,7 @@ if command == "test":
             checked_call(['make', 'check'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
         else:
             checked_call(['make', 'check', 'TESTS_ENVIRONMENT=./tests/ValgrindWrapper'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
-        
+finalPart = ''
 elif command == "package":
     if project == "cellml-api":
         # Source code only...
@@ -269,10 +269,10 @@ elif command == "package":
                           'XML=' + xml_path, 'GCC=' + gcc_path,
                           'SHIPGCC=' + ship_gcc_path])
             if platform == "linux-x86":
-                finalPart += "opencell-x86_Linux-0.8.tar.bz2"
+                finalPart = "opencell-x86_Linux-0.8.tar.bz2"
                 checked_call(["mv", "opencell-x86_Linux.tar.bz2", "opencell-x86_Linux-0.8.tar.bz2"])
             elif platform == "osx-x86":
-                finalPart += "opencell-i386_OSX-0.8.dmg"
+                finalPart = "opencell-i386_OSX-0.8.dmg"
                 checked_call(["mv", "opencell-i386_OSX.dmg", "opencell-i386_OSX-0.8.dmg"])
     pathInSVN += finalPart
     checked_call(['svn', 'up', '/tmp/' + project + platform])

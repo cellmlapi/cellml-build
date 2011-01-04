@@ -17,8 +17,8 @@ $B/downloads/MSVC-CPP-Express-Setup.exe
 echo "Press any key to continue"
 read
 
-echo . $B/physiome-build/cygwin-build/msvc9-config >>~/.profile
-. $B/physiome-build/cygwin-build/msvc9-config
+echo . $B/cellml-build/cygwin-build/msvc9-config >>~/.profile
+. $B/cellml-build/cygwin-build/msvc9-config
 wget http://download.microsoft.com/download/2/3/f/23f86204-39ee-4cd7-9a51-db19c9a8f8c4/Setup.exe -O $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 chmod u+x $B/downloads/Windows-Platform-SDK-2008-Setup.exe
 echo <<END

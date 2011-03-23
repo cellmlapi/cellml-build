@@ -4,23 +4,18 @@
 projectRepos = {
     "cellml-api": 
 "http://cellml-api.hg.sourceforge.net/hgroot/cellml-api/cellml-api",
-    "opencell": 
-"http://cellml-opencell.hg.sourceforge.net/hgroot/cellml-opencell/cellml-opencell"
 }
 projectVersions = {
-    "cellml-api": 
-"1.8",
-    "opencell": 
-"0.8"
+    "cellml-api": "1.9",
 }
 projectRevisions = {
-    "cellml-api":  None,
-    "opencell":    None
+    "cellml-api":  None
+}
+# Which platform is responsible for packaging up the source code?
+packageSourceOn = {
+    "cellml-api": "linux-x86"
 }
 
-
-# For now... we need a better way to handle different branches.
-snapshot_branch = 'branches/0.8'
 
 # Now the script proper...
 import sys, time, os, shutil, mercurial, mercurial.ui, mercurial.hg, mercurial.commands, subprocess, re, datetime, string
@@ -122,31 +117,26 @@ elif platform == 'osx-x86':
 
 repo = projectRepos[project]
 version = projectVersions[project]
+
 if project == "cellml-api":
-    configureOptions = ["--enable-xpcom=" + xulrunner_path, "--enable-context",
+    configureOptions = ["--enable-xpcom=" + xulrunner_path,
+                        "--enable-java", "--enable-python",
+                        "--enable-context",
                         "--enable-annotools", "--enable-cuses",
                         "--enable-cevas", "--enable-vacss",
                         "--enable-malaes", "--enable-ccgs",
                         "--enable-celeds", "--enable-cis",
-                        "--enable-rdf"]
+                        "--enable-rdf",    "--enable-telicems",
+                        "--enable-spros"]
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:
         configureOptions.append('--enable-gsl-integrators')
-else:
-    configureOptions = ["--with-mozilla=" + xulrunner_path,
-                        "--with-cellml_api=" + os.getcwd().replace('build_opencell', 'build_api') + '/../cellml-api-build']
+
 path = project + "-build"
-java = False
 
 # Get the timestamp of this script...
 scriptTime = os.stat('./scripts/run-platform-command.py').st_mtime
 
 os.chdir('..')
-
-if command == "test-java":
-    path = project + "-java"
-    command = "test"
-    configureOptions += ["--enable-java"]
-    configureOptions.remove('--enable-context')
 
 if command == "build-static":
     path = project + "-static"
@@ -157,11 +147,6 @@ if command == "build-static":
     configureOptions += ["--enable-examples=no"]
     configureOptions.remove('--enable-context')
     configureOptions.remove("--enable-xpcom=" + xulrunner_path)
-
-if command == "package-java":
-    path = project + "-java"
-    command = "package"
-    java = True
 
 mkPristine = not os.path.exists(project)
 
@@ -229,52 +214,54 @@ if command == "test":
             checked_call(['make', 'check', 'TESTS_ENVIRONMENT=./tests/ValgrindWrapper'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
 elif command == "package":
     finalPart = ''
-    if project == "cellml-api":
-        # Source code only...
-        platform = ""
 
     try:
         shutil.rmtree('/tmp/' + project + platform)
     except OSError:
         pass
-    checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/snapshots/' +\
-                  project + '/' + snapshot_branch + '/' + platform, '/tmp/' + project + platform])
 
-    if project == "cellml-api":
-        cellml_api = os.getcwd().replace('package_api', 'clean_build_api')
-    else:
-        cellml_api = os.getcwd().replace('package_opencell', 'clean_build_api') + '/cellml-api-build'
-        opencell = os.getcwd().replace('package_opencell', 'clean_build_opencell') + '/opencell-build'
+    versionBranch = 'branches/' + version
 
-    pathInSVN = 'snapshots/' + project + '/' + snapshot_branch + '/'
+    packagingSourceHere = packageSourceOn[project] == platform
+    
+    if packagingSourceHere:
+      pathInSVN = 'snapshots/' + project + '/' + versionbranch + '/source/'
+      checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/' +\
+                    pathInSVN, '/tmp/' + project + "source"])
 
-    os.chdir('/tmp/' + project + platform)
+      if project == "cellml-api":
+          cellml_api_source = os.getcwd().replace('package_api', 'clean_build_api') + ''
+          cellml_api_built = os.getcwd().replace('package_api', 'clean_build_api') + '/cellml-api-build'
+
+      os.chdir('/tmp/' + project + platform + "source")
+      if project == 'cellml-api':
+        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' + version + '.tar.bz2',
+                      '-C', cellml_api_source, project])
+        finalPart = "cellml-api-" + version + ".tar.bz2"
+
+      pathInSVN += finalPart
+    
+      checked_call(['svn', 'up', '/tmp/' + project + platform])
+      index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
+      open('index.html', 'w').write(index)
+      # Add the program, in case this is the first invocation on this branch.
+      checked_call(['svn', 'add', finalPart])
+      checked_call(['svn', 'commit', '-m', 'Added a newly built source snapshot'])
+
+
+    pathInSVN = 'snapshots/' + project + '/' + versionbranch + '/' + platform + '/'
+    checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/' +\
+                  pathInSVN, '/tmp/' + project + platform])
+
     if project == 'cellml-api':
-        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-1.8.tar.bz2',
-                      '-C', cellml_api, project])
-        finalPart = "cellml-api-1.8.tar.bz2"
-    elif java:
-        pass
-    elif project == "opencell":
-        pathInSVN += platform + "/"
-        if platform == "win32":
-            checked_call(["cl", "/Fe" + toNative(opencell + "/appSupport/win32/opencell"), toNative(opencell + "/appSupport/win32/launcher-win32.c")])
-            checked_call(["/cygdrive/c/Program Files/NSIS/makensis", toNative(opencell + "/installers/opencell-win32.nsi")])
-            finalPart = "opencell-win32-installer-0.8.exe"
-            checked_call(["mv", opencell + "/installers/opencell-win32-installer.exe", "opencell-win32-installer-0.8.exe"])
-        else:
-            checked_call([opencell + '/installers/FinalStageMaker.py', opencell + '/installers/' + spec + '.spec',
-                          'Mozilla=' + xulrunner_path + '/bin', 'OpenCell=' + opencell, 'version=' + projectVersions['opencell'],
-                          'CellMLAPI=' + cellml_api, 'GSL=' + gsl_path,
-                          'XML=' + xml_path, 'GCC=' + gcc_path,
-                          'SHIPGCC=' + ship_gcc_path])
-            if platform == "linux-x86":
-                finalPart = "opencell-x86_Linux-0.8.tar.bz2"
-                checked_call(["mv", "opencell-x86_Linux.tar.bz2", "opencell-x86_Linux-0.8.tar.bz2"])
-            elif platform == "osx-x86":
-                finalPart = "opencell-i386_OSX-0.8.dmg"
-                checked_call(["mv", "opencell-i386_OSX.dmg", "opencell-i386_OSX-0.8.dmg"])
+        # This needs to be updated to specify the specific files to include on each platform.
+        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' +\
+                      version + '-' + platform + '.tar.bz2',
+                      '-C', cellml_api_built, '.'])
+        
+
     pathInSVN += finalPart
+    
     checked_call(['svn', 'up', '/tmp/' + project + platform])
     index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
     open('index.html', 'w').write(index)

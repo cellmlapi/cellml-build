@@ -225,7 +225,7 @@ elif command == "package":
     packagingSourceHere = packageSourceOn[project] == platform
     
     if packagingSourceHere:
-      pathInSVN = 'snapshots/' + project + '/' + versionbranch + '/source/'
+      pathInSVN = 'snapshots/' + project + '/' + versionBranch + '/source/'
       checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/' +\
                     pathInSVN, '/tmp/' + project + "source"])
 
@@ -252,7 +252,7 @@ elif command == "package":
       checked_call(['svn', 'add', finalPart])
       checked_call(['svn', 'commit', '-m', 'Added a newly built source snapshot'])
 
-    pathInSVN = 'snapshots/' + project + '/' + versionbranch + '/' + platform + '/'
+    pathInSVN = 'snapshots/' + project + '/' + versionBranch + '/' + platform + '/'
     checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/' +\
                   pathInSVN, '/tmp/' + project + platform])
 

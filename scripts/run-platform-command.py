@@ -212,6 +212,7 @@ if command == "test":
             checked_call(['make', 'check'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
         else:
             checked_call(['make', 'check', 'TESTS_ENVIRONMENT=./tests/ValgrindWrapper'], 'WIN32.*macro redefinition|xulrunner-sdk.*Current.*does not exist')
+        checked_call(['make', 'cellml-sdk.tar.bz2'])
 elif command == "package":
     finalPart = ''
 
@@ -240,7 +241,7 @@ elif command == "package":
         checked_call(['autoconf'])
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' + version + '.tar.bz2',
                       '-C', cellml_api_source, project])
-        finalPart = "cellml-api-" + version + ".tar.bz2"
+        finalPart = "cellml-api.tar.bz2"
 
       pathInSVN += finalPart
     
@@ -259,9 +260,9 @@ elif command == "package":
 
     if project == 'cellml-api':
         # This needs to be updated to specify the specific files to include on each platform.
-        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' +\
-                      platform + '.tar.bz2',
-                      '-C', cellml_api_built, '.'])
+        finalPart = 'cellml-sdk.tar.bz2'
+        checked_call(['cp', cellml_api_built . '/cellml-sdk.tar.bz2', '/tmp/' + project + '/' +
+                      finalPart])
 
     pathInSVN += finalPart
     

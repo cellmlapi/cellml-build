@@ -255,11 +255,12 @@ elif command == "package":
     pathInSVN = 'snapshots/' + project + '/' + versionBranch + '/' + platform + '/'
     checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/' +\
                   pathInSVN, '/tmp/' + project + platform])
+    os.chdir('/tmp/' + project + platform)
 
     if project == 'cellml-api':
         # This needs to be updated to specify the specific files to include on each platform.
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' +\
-                      version + '-' + platform + '.tar.bz2',
+                      platform + '.tar.bz2',
                       '-C', cellml_api_built, '.'])
 
     pathInSVN += finalPart

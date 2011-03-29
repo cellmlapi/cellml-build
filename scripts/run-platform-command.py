@@ -233,21 +233,24 @@ elif command == "package":
           cellml_api_source = os.getcwd().replace('package_api', 'clean_build_api') + ''
           cellml_api_built = os.getcwd().replace('package_api', 'clean_build_api') + '/cellml-api-build'
 
-      os.chdir('/tmp/' + project + platform + "source")
       if project == 'cellml-api':
+        os.chdir(cellml_api_source + '/cellml-api')
+        checked_call(['aclocal'])
+        checked_call(['automake'])
+        checked_call(['autoconf'])
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' + version + '.tar.bz2',
                       '-C', cellml_api_source, project])
         finalPart = "cellml-api-" + version + ".tar.bz2"
 
       pathInSVN += finalPart
     
+      os.chdir('/tmp/' + project + platform + "source")
       checked_call(['svn', 'up', '/tmp/' + project + platform])
       index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
       open('index.html', 'w').write(index)
       # Add the program, in case this is the first invocation on this branch.
       checked_call(['svn', 'add', finalPart])
       checked_call(['svn', 'commit', '-m', 'Added a newly built source snapshot'])
-
 
     pathInSVN = 'snapshots/' + project + '/' + versionbranch + '/' + platform + '/'
     checked_call(['svn', 'co', 'https://svn.physiomeproject.org/svn/physiome/' +\
@@ -258,7 +261,6 @@ elif command == "package":
         checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' +\
                       version + '-' + platform + '.tar.bz2',
                       '-C', cellml_api_built, '.'])
-        
 
     pathInSVN += finalPart
     

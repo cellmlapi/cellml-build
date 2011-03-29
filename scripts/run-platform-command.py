@@ -244,7 +244,7 @@ elif command == "package":
 
       pathInSVN += finalPart
     
-      os.chdir('/tmp/' + project + platform + "source")
+      os.chdir('/tmp/' + project + "source")
       checked_call(['svn', 'up', '/tmp/' + project + platform])
       index = add_entry_to_index(open('index.html', 'r').read(), pathInSVN)
       open('index.html', 'w').write(index)

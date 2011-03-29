@@ -11,6 +11,9 @@ projectVersions = {
 projectRevisions = {
     "cellml-api":  None
 }
+projectTrunk = {
+    "cellml-api": True
+}
 # Which platform is responsible for packaging up the source code?
 packageSourceOn = {
     "cellml-api": "linux-x86"
@@ -187,7 +190,7 @@ if command == "test":
     if projectRevisions[project] != None:
       mercurial.commands.update(ui, buildrepo, rev=projectRevisions[project], clean=True)
     else:
-      mercurial.commands.update(ui, buildrepo, rev=version, clean=True)
+      mercurial.commands.update(ui, buildrepo, rev=None if projectTrunk[project] else version, clean=True)
     print "Build repository current branch: "
     mercurial.commands.branch(ui, buildrepo)
     #print ("Build repository current status: ")

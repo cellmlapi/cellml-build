@@ -261,7 +261,7 @@ elif command == "package":
         # This needs to be updated to specify the specific files to include on each platform.
         cellml_api_built = os.getcwd().replace('package_api', 'clean_build_api') + '/cellml-api-build'
         finalPart = 'cellml-sdk.tar.bz2'
-        checked_call(['cp', cellml_api_built . '/cellml-sdk.tar.bz2', '/tmp/' + project + '/' +
+        checked_call(['cp', cellml_api_built + '/cellml-sdk.tar.bz2', '/tmp/' + project + '/' +
                       finalPart])
 
     pathInSVN += finalPart

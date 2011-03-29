@@ -20,8 +20,8 @@ How to get a build system started:
   cd /cygdrive/c/
   mkdir build
   cd build
-  hg clone http://bitbucket.org/a1kmm/physiome-build
-  cd physiome-build/cygwin-build
+  hg clone http://bitbucket.org/a1kmm/cellml-build
+  cd cellml-build/cygwin-build
   ./setup-build-environment.sh
 
 5)

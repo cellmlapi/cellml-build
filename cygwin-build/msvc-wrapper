@@ -176,6 +176,8 @@ if target == 'executable' or target == 'dll':
       newInputs.append(t)
     elif t[-4:] == '.dll':
       newInputs.append(re.sub('\-[0-9|\.]+\.dll', '.lib', t))
+    elif t[-4:] == '.lib':
+      newInputs.append(re.sub('\-[0-9|\.]+\.lib', '.lib', t))
     else:
       dot = t.rindex('.')
       tout = t[0:dot] + '.obj'
@@ -192,7 +194,7 @@ elif target == 'object':
 if target == 'dll':
   linkSupArgs.append('/DLL')
   linkSupArgs.append('/FORCE:MULTIPLE')  
-  linkSupArgs.append('/IMPLIB:' + re.sub('(\-[0-9|\.]+)?\.dll', '.lib', CygwinToNative(output)))
+  linkSupArgs.append('/IMPLIB:' + re.sub('(\-[0-9|\.]+)\.dll', '.lib', CygwinToNative(output)))
 
 if autobase == 1:
   base = 0x60000000 | ((output.__hash__() << 16) & 0xFFC0000)

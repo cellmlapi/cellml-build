@@ -123,7 +123,7 @@ version = projectVersions[project]
 
 if project == "cellml-api":
     configureOptions = ["--enable-xpcom=" + xulrunner_path,
-                        "--enable-java", "--enable-python",
+                        "--enable-java",
                         "--enable-context",
                         "--enable-annotools", "--enable-cuses",
                         "--enable-cevas", "--enable-vacss",
@@ -133,6 +133,7 @@ if project == "cellml-api":
                         "--enable-spros"]
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:
         configureOptions.append('--enable-gsl-integrators')
+        configureOptions.append("--enable-python")
 
 path = project + "-build"
 

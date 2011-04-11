@@ -141,6 +141,7 @@ path = project + "-build"
 scriptTime = os.stat('./scripts/run-platform-command.py').st_mtime
 
 os.chdir('..')
+origpath = os.getcwd()
 
 if command == "build-static":
     path = project + "-static"
@@ -242,7 +243,7 @@ elif command == "package":
         checked_call(['aclocal'])
         checked_call(['automake'])
         checked_call(['autoconf'])
-        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + '/cellml-api-' + version + '.tar.bz2',
+        checked_call(['tar', '--exclude=.hg', '-cjf', '/tmp/' + project + 'source/cellml-api-' + version + '.tar.bz2',
                       '-C', cellml_api_source, project])
         finalPart = "cellml-api.tar.bz2"
 
@@ -263,7 +264,7 @@ elif command == "package":
 
     if project == 'cellml-api':
         # This needs to be updated to specify the specific files to include on each platform.
-        cellml_api_built = os.getcwd().replace('package_api', 'clean_build_api') + '/cellml-api-build'
+        cellml_api_built = origpath.replace('package_api', 'clean_build_api') + '/cellml-api-build'
         finalPart = 'cellml-sdk.tar.bz2'
         checked_call(['cp', cellml_api_built + '/cellml-sdk.tar.bz2', '/tmp/' + project + '/' +
                       finalPart])

@@ -172,7 +172,7 @@ if target == 'executable' or target == 'dll':
 
   newInputs = []
   for t in inputs:
-    if t[-4:] == '.obj' or t[-2:] == '.o' or t[-4:] == '.lib':
+    if t[-4:] == '.obj' or t[-2:] == '.o':
       newInputs.append(t)
     elif t[-4:] == '.dll':
       newInputs.append(re.sub('\-[0-9|\.]+\.dll', '.lib', t))

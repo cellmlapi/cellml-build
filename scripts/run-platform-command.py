@@ -80,7 +80,7 @@ elif re.search('Darwin.*86 ', uname) != None:
 else:
     platform = 'unknown'
 
-if environ.has_key('CC') && re.match("i.86-mingw.*", environ['CC']):
+if environ.has_key('CC') and re.match("i.86-mingw.*", environ['CC']):
     platform = 'win32-mingw'
 
 if len(sys.argv) < 4:

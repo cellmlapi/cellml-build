@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from sys import environ
+import re
+
 # First some configuration...
 projectRepos = {
     "cellml-api": 
@@ -76,6 +79,9 @@ elif re.search('Darwin.*86 ', uname) != None:
     platform = 'osx-x86'
 else:
     platform = 'unknown'
+
+if environ.has_key('CC') && re.match("i.86-mingw.*", environ['CC']):
+    platform = 'win32-mingw'
 
 if len(sys.argv) < 4:
     print "run-platform-command.py [project] [command] [clobber|depend][,valgrind]"

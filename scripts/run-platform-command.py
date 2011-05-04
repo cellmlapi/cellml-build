@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from sys import environ
+from os import environ
 import re
 
 # First some configuration...

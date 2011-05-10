@@ -134,6 +134,10 @@ if project == "cellml-api":
                         "--enable-celeds", "--enable-cis",
                         "--enable-rdf",    "--enable-telicems",
                         "--enable-spros"]
+    if platform == 'win32-mingw':
+        # Because of the import library situation on Windows, can't do both.
+        configureOptions.append('--disable-static')
+        configureOptions.append('--enable-shared')        
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86', 'win32']:
         configureOptions.append("--enable-xpcom=" + xulrunner_path)
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:

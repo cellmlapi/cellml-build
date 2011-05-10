@@ -140,6 +140,8 @@ if project == "cellml-api":
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:
         configureOptions.append('--enable-gsl-integrators')
         configureOptions.append("--enable-python")
+    else:
+        configureOptions.append('--disable-gsl-integrators')
 
 path = project + "-build"
 

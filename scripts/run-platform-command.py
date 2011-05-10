@@ -126,8 +126,7 @@ repo = projectRepos[project]
 version = projectVersions[project]
 
 if project == "cellml-api":
-    configureOptions = ["--enable-xpcom=" + xulrunner_path,
-                        "--enable-java",
+    configureOptions = ["--enable-java",
                         "--enable-context",
                         "--enable-annotools", "--enable-cuses",
                         "--enable-cevas", "--enable-vacss",
@@ -135,6 +134,8 @@ if project == "cellml-api":
                         "--enable-celeds", "--enable-cis",
                         "--enable-rdf",    "--enable-telicems",
                         "--enable-spros"]
+    if platform in ['linux-x86', 'linux-x86_64', 'osx-x86', 'win32']:
+        configureOptions.append("--enable-xpcom=" + xulrunner_path)
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:
         configureOptions.append('--enable-gsl-integrators')
         configureOptions.append("--enable-python")
@@ -203,7 +204,6 @@ if command == "test":
     mercurial.commands.branch(ui, buildrepo)
     #print ("Build repository current status: ")
     #mercurial.commands.status(ui, buildrepo)
-
 
     # We now have an up-to-date build repo, clobbered if requested. Build it...
     os.chdir(path)

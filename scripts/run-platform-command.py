@@ -67,9 +67,7 @@ def toNative(cpath):
 
 # Get the platform.
 uname = subprocess.Popen(['uname', '-a'], stdout=subprocess.PIPE).stdout.read()
-if re.search('mingw32', os.getcwd()):
-    platform = 'mingw32'
-elif re.search('CYGWIN', uname) != None:
+if re.search('CYGWIN', uname) != None:
     platform = 'win32'
 elif re.search('Linux .*86 ', uname) != None:
     platform = 'linux-x86'
@@ -80,7 +78,7 @@ elif re.search('Darwin.*86 ', uname) != None:
 else:
     platform = 'unknown'
 
-if environ.has_key('CC') and re.match("i.86-mingw.*", environ['CC']):
+if environ.has_key('CC') and re.match(".*i.86-mingw.*", environ['CC']):
     platform = 'win32-mingw'
 
 if len(sys.argv) < 4:

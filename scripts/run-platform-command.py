@@ -137,7 +137,9 @@ if project == "cellml-api":
     if platform == 'win32-mingw':
         # Because of the import library situation on Windows, can't do both.
         configureOptions.append('--disable-static')
-        configureOptions.append('--enable-shared')        
+        configureOptions.append('--enable-shared')
+        configureOptions.append('--host=i586-gcc-mingw32')
+        configureOptions.append('--build=i686-gcc-linux')        
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86', 'win32']:
         configureOptions.append("--enable-xpcom=" + xulrunner_path)
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:

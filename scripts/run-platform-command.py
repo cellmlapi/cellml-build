@@ -126,8 +126,7 @@ repo = projectRepos[project]
 version = projectVersions[project]
 
 if project == "cellml-api":
-    configureOptions = ["--enable-java",
-                        "--enable-context",
+    configureOptions = ["--enable-context",
                         "--enable-annotools", "--enable-cuses",
                         "--enable-cevas", "--enable-vacss",
                         "--enable-malaes", "--enable-ccgs",
@@ -140,6 +139,8 @@ if project == "cellml-api":
         configureOptions.append('--enable-shared')
         configureOptions.append('--build=i686-gcc-linux')
         configureOptions.append('--host=i586-mingw32-mingw32')
+    else:
+        configureOptions.append("--enable-java")
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86', 'win32']:
         configureOptions.append("--enable-xpcom=" + xulrunner_path)
     if platform in ['linux-x86', 'linux-x86_64', 'osx-x86']:
